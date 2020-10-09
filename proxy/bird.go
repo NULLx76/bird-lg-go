@@ -63,7 +63,7 @@ func birdWriteln(bird io.Writer, s string) {
 	bird.Write([]byte(s + "\n"))
 }
 
-// Handles BIRDv4 queries
+// Handles BIRD queries
 func birdHandler(httpW http.ResponseWriter, httpR *http.Request) {
 	query := httpR.URL.Query().Get("q")
 	if query == "" {
@@ -81,28 +81,6 @@ func birdHandler(httpW http.ResponseWriter, httpR *http.Request) {
 		birdReadln(bird, nil)
 		birdWriteln(bird, query)
 		for birdReadln(bird, httpW) {
-		}
-	}
-}
-
-// Handles BIRDv6 queries
-func bird6Handler(httpW http.ResponseWriter, httpR *http.Request) {
-	query := httpR.URL.Query().Get("q")
-	if query == "" {
-		invalidHandler(httpW, httpR)
-	} else {
-		// Initialize BIRDv6 socket
-		bird6, err := net.Dial("unix", setting.birdSocket)
-		if err != nil {
-			panic(err)
-		}
-		defer bird6.Close()
-
-		birdReadln(bird6, nil)
-		birdWriteln(bird6, "restrict")
-		birdReadln(bird6, nil)
-		birdWriteln(bird6, query)
-		for birdReadln(bird6, httpW) {
 		}
 	}
 }

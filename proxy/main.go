@@ -15,7 +15,7 @@ func isNumeric(b byte) bool {
 }
 
 // Default handler, returns 500 Internal Server Error
-func invalidHandler(httpW http.ResponseWriter, httpR *http.Request) {
+func invalidHandler(httpW http.ResponseWriter, _ *http.Request) {
 	httpW.WriteHeader(http.StatusInternalServerError)
 	_, _ = httpW.Write([]byte("Invalid Request\n"))
 }
@@ -53,7 +53,9 @@ func main() {
 	// Start HTTP server
 	http.HandleFunc("/", invalidHandler)
 	http.HandleFunc("/bird", birdHandler)
-	http.HandleFunc("/bird6", bird6Handler)
+	http.HandleFunc("/bird6", birdHandler) // for backwards compat
+
+
 	http.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
 	http.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
 
