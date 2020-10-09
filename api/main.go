@@ -1,6 +1,9 @@
 package main
 
-import log "github.com/sirupsen/logrus"
+import (
+	"fmt"
+	log "github.com/sirupsen/logrus"
+)
 
 type config struct {
 	birdServers []string
@@ -11,9 +14,9 @@ func main() {
 		birdServers: []string{"http://dn42:8000"},
 	}
 
-	log.Infof("config %v", cfg)
+	log.Tracef("config %v", cfg)
 
 	for server := range cfg.birdServers {
-		log.Info(queryBackend(cfg.birdServers[server], "show protocols"))
+		fmt.Println(Summary(cfg.birdServers[server]))
 	}
 }
