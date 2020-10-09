@@ -55,7 +55,6 @@ func main() {
 	http.HandleFunc("/bird", birdHandler)
 	http.HandleFunc("/bird6", birdHandler) // for backwards compat
 
-
 	http.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
 	http.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
 
