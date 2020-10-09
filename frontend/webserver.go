@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -157,5 +158,5 @@ func webServerStart() {
 	http.HandleFunc("/whois/", webHandlerWhois)
 	http.HandleFunc("/redir", webHandlerNavbarFormRedirect)
 	http.HandleFunc("/telegram/", webHandlerTelegramBot)
-	http.ListenAndServe(setting.listen, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
+	log.Fatal(http.ListenAndServe(setting.listen, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
 }

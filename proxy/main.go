@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"net/http"
 	"os"
 
@@ -16,7 +17,7 @@ func isNumeric(b byte) bool {
 // Default handler, returns 500 Internal Server Error
 func invalidHandler(httpW http.ResponseWriter, httpR *http.Request) {
 	httpW.WriteHeader(http.StatusInternalServerError)
-	httpW.Write([]byte("Invalid Request\n"))
+	_, _ = httpW.Write([]byte("Invalid Request\n"))
 }
 
 type settingType struct {
@@ -62,5 +63,6 @@ func main() {
 	http.HandleFunc("/bird6", bird6Handler)
 	http.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
 	http.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
-	http.ListenAndServe(*listenParam, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
+
+	log.Fatal(http.ListenAndServe(*listenParam, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
 }

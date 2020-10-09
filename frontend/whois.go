@@ -13,7 +13,11 @@ func whois(s string) string {
 	}
 	defer conn.Close()
 
-	conn.Write([]byte(s + "\r\n"))
+	_, err = conn.Write([]byte(s + "\r\n"))
+	if err != nil {
+		return err.Error()
+	}
+
 	result, err := ioutil.ReadAll(conn)
 	if err != nil {
 		return err.Error()

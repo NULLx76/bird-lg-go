@@ -15,5 +15,10 @@
 # vendor/
 
 .DS_Store
+
+# Binaries
 frontend/frontend
 proxy/proxy
+
+# IDEs
+.idea/
