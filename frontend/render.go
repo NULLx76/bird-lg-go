@@ -87,8 +87,7 @@ type summaryTableArguments struct {
 }
 
 // Output a table for the summary page
-func summaryTable(isIPv6 bool, data string, serverName string) string {
-	var result string
+func summaryTable(isIPv6 bool, data string, serverName string) (result string) {
 
 	// Sort the table, excluding title row
 	stringsSplitted := strings.Split(strings.TrimSpace(data), "\n")
@@ -151,6 +150,5 @@ func summaryTable(isIPv6 bool, data string, serverName string) string {
 		result += "</tbody></table>"
 		result += "<!--" + data + "-->"
 	}
-
-	return result
+	return
 }

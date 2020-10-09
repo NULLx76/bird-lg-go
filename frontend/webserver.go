@@ -12,7 +12,7 @@ import (
 )
 
 func webHandlerWhois(w http.ResponseWriter, r *http.Request) {
-	var target string = r.URL.Path[len("/whois/"):]
+	var target = r.URL.Path[len("/whois/"):]
 
 	renderTemplate(
 		w, r,
@@ -53,13 +53,13 @@ func webBackendCommunicator(endpoint string, command string) func(w http.Respons
 		}
 		backendCommand = strings.TrimSpace(backendCommand)
 
-		var servers []string = strings.Split(split[2], "+")
-		var responses []string = batchRequest(servers, endpoint, backendCommand)
+		var servers = strings.Split(split[2], "+")
+		var responses = batchRequest(servers, endpoint, backendCommand)
 		var result string
 		for i, response := range responses {
 			result += "<h2>" + html.EscapeString(servers[i]) + ": " + html.EscapeString(backendCommand) + "</h2>"
 			if (endpoint == "bird" || endpoint == "bird6") && backendCommand == "show protocols" && len(response) > 4 && strings.ToLower(response[0:4]) == "name" {
-				var isIPv6 bool = endpoint[len(endpoint)-1] == '6'
+				var isIPv6 = endpoint[len(endpoint)-1] == '6'
 				result += summaryTable(isIPv6, response, servers[i])
 			} else {
 				result += smartFormatter(response)
@@ -95,8 +95,8 @@ func webHandlerBGPMap(endpoint string, command string) func(w http.ResponseWrite
 			backendCommand = backendCommandPrimitive
 		}
 
-		var servers []string = strings.Split(split[2], "+")
-		var responses []string = batchRequest(servers, endpoint, backendCommand)
+		servers := strings.Split(split[2], "+")
+		responses := batchRequest(servers, endpoint, backendCommand)
 		renderTemplate(
 			w, r,
 			" - "+html.EscapeString(endpoint+" "+backendCommand),

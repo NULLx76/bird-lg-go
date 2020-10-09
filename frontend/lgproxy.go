@@ -20,7 +20,7 @@ func batchRequest(servers []string, endpoint string, command string) []string {
 
 	for i, server := range servers {
 		// Check if the server is in the valid server list passed at startup
-		var isValidServer = false
+		isValidServer := false
 		for _, validServer := range setting.servers {
 			if validServer == server {
 				isValidServer = true
@@ -50,7 +50,7 @@ func batchRequest(servers []string, endpoint string, command string) []string {
 
 	// Sort the responses by their ids, to return data in order
 	for range servers {
-		var output channelData = <-ch
+		output := <-ch
 		responseArray[output.id] = output.data
 		if len(responseArray[output.id]) == 0 {
 			responseArray[output.id] = "node returned empty response, please refresh to try again."

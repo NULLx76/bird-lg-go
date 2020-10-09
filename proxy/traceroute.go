@@ -128,15 +128,15 @@ func tracerouteRealHandler(useIPv6 bool, httpW http.ResponseWriter, httpR *http.
 			}
 		} else {
 			httpW.WriteHeader(http.StatusInternalServerError)
-			httpW.Write([]byte("traceroute not supported on this node.\n"))
+			_, _ = httpW.Write([]byte("traceroute not supported on this node.\n"))
 			return
 		}
 		if errString != "" {
 			httpW.WriteHeader(http.StatusInternalServerError)
-			httpW.Write([]byte("traceroute returned error:\n\n" + errString))
+			_, _ = httpW.Write([]byte("traceroute returned error:\n\n" + errString))
 		}
 		if result != nil {
-			httpW.Write(result)
+			_, _ = httpW.Write(result)
 		}
 	}
 }

@@ -65,7 +65,7 @@ func birdWriteln(bird io.Writer, s string) {
 
 // Handles BIRDv4 queries
 func birdHandler(httpW http.ResponseWriter, httpR *http.Request) {
-	query := string(httpR.URL.Query().Get("q"))
+	query := httpR.URL.Query().Get("q")
 	if query == "" {
 		invalidHandler(httpW, httpR)
 	} else {
