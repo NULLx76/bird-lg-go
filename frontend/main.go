@@ -2,20 +2,20 @@ package main
 
 import (
 	"flag"
-	"os"
-	"strconv"
+	"github.com/caarlos0/env/v6"
+	"log"
 	"strings"
 )
 
 type settingType struct {
-	servers         []string
-	proxyPort       int
-	whoisServer     string
-	listen          string
-	dnsInterface    string
-	netSpecificMode string
-	titleBrand      string
-	navBarBrand     string
+	servers         []string `env:"BIRDLG_SERVERS" envSeparator:","`
+	proxyPort       int      `env:"BIRDLG_PROXY_PORT"`
+	whoisServer     string   `env:"BIRDLG_WHOIS"`
+	listen          string   `env:"BIRDLG_LISTEN"`
+	dnsInterface    string   `env:"BIRDLG_DNS_INTERFACE"`
+	netSpecificMode string   `env:"BIRDLG_NET_SPECIFIC_MODE"`
+	titleBrand      string   `env:"BIRDLG_TITLE_BRAND"`
+	navBarBrand     string   `env:"BIRDLG_NAVBAR_BRAND"`
 }
 
 var setting settingType
@@ -31,33 +31,8 @@ func main() {
 		navBarBrand:  "Bird-lg Go",
 	}
 
-	if env := os.Getenv("BIRDLG_SERVERS"); env != "" {
-		settingDefault.servers = strings.Split(env, ",")
-	}
-	if env := os.Getenv("BIRDLG_PROXY_PORT"); env != "" {
-		var err error
-		if settingDefault.proxyPort, err = strconv.Atoi(env); err != nil {
-			panic(err)
-		}
-	}
-	if env := os.Getenv("BIRDLG_WHOIS"); env != "" {
-		settingDefault.whoisServer = env
-	}
-	if env := os.Getenv("BIRDLG_LISTEN"); env != "" {
-		settingDefault.listen = env
-	}
-	if env := os.Getenv("BIRDLG_DNS_INTERFACE"); env != "" {
-		settingDefault.dnsInterface = env
-	}
-	if env := os.Getenv("BIRDLG_NET_SPECIFIC_MODE"); env != "" {
-		settingDefault.netSpecificMode = env
-	}
-	if env := os.Getenv("BIRDLG_TITLE_BRAND"); env != "" {
-		settingDefault.titleBrand = env
-		settingDefault.navBarBrand = env
-	}
-	if env := os.Getenv("BIRDLG_NAVBAR_BRAND"); env != "" {
-		settingDefault.navBarBrand = env
+	if err := env.Parse(&settingDefault); err != nil {
+		log.Fatalf("%+v\n", err)
 	}
 
 	serversPtr := flag.String("servers", strings.Join(settingDefault.servers, ","), "server name prefixes, separated by comma")

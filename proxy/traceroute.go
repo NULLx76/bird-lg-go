@@ -30,14 +30,14 @@ func tracerouteTryExecute(cmd []string, args [][]string) ([]byte, string) {
 		if err == nil {
 			return output, ""
 		}
-		errString += fmt.Sprintf("+ (Try %d) %s\n%s\n\n", (i + 1), cmdCombined, output)
+		errString += fmt.Sprintf("+ (Try %d) %s\n%s\n\n", i+1, cmdCombined, output)
 	}
 	return nil, errString
 }
 
 // Real handler of traceroute requests
 func tracerouteRealHandler(useIPv6 bool, httpW http.ResponseWriter, httpR *http.Request) {
-	query := string(httpR.URL.Query().Get("q"))
+	query := httpR.URL.Query().Get("q")
 	query = strings.TrimSpace(query)
 	if query == "" {
 		invalidHandler(httpW, httpR)

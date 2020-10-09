@@ -21,9 +21,8 @@ func invalidHandler(httpW http.ResponseWriter, httpR *http.Request) {
 }
 
 type settingType struct {
-	birdSocket  string
-	bird6Socket string
-	listen      string
+	birdSocket string
+	listen     string
 }
 
 var setting settingType
@@ -32,16 +31,12 @@ var setting settingType
 func main() {
 	// Prepare default socket paths, use environment variable if possible
 	var settingDefault = settingType{
-		"/var/run/bird/bird.ctl",
-		"/var/run/bird/bird6.ctl",
+		"/var/run/bird.ctl",
 		":8000",
 	}
 
 	if birdSocketEnv := os.Getenv("BIRD_SOCKET"); birdSocketEnv != "" {
 		settingDefault.birdSocket = birdSocketEnv
-	}
-	if bird6SocketEnv := os.Getenv("BIRD6_SOCKET"); bird6SocketEnv != "" {
-		settingDefault.bird6Socket = bird6SocketEnv
 	}
 	if listenEnv := os.Getenv("BIRDLG_LISTEN"); listenEnv != "" {
 		settingDefault.listen = listenEnv
@@ -49,12 +44,10 @@ func main() {
 
 	// Allow parameters to override environment variables
 	birdParam := flag.String("bird", settingDefault.birdSocket, "socket file for bird, set either in parameter or environment variable BIRD_SOCKET")
-	bird6Param := flag.String("bird6", settingDefault.bird6Socket, "socket file for bird6, set either in parameter or environment variable BIRD6_SOCKET")
 	listenParam := flag.String("listen", settingDefault.listen, "listen address, set either in parameter or environment variable BIRDLG_LISTEN")
 	flag.Parse()
 
 	setting.birdSocket = *birdParam
-	setting.bird6Socket = *bird6Param
 	setting.listen = *listenParam
 
 	// Start HTTP server

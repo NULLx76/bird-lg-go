@@ -11,8 +11,8 @@ import (
 func birdReadln(bird io.Reader, w io.Writer) bool {
 	// Read from socket byte by byte, until reaching newline character
 	c := make([]byte, 1024, 1024)
-	pos := 0
-	for {
+	var pos int
+	for pos = 0; c[pos] != byte('\n'); pos++ {
 		if pos >= 1024 {
 			break
 		}
@@ -20,14 +20,9 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 		if err != nil {
 			panic(err)
 		}
-		if c[pos] == byte('\n') {
-			break
-		}
-		pos++
 	}
 
 	c = c[:pos+1]
-	// print(string(c[:]))
 
 	// Remove preceding status number, different situations
 	if pos < 4 {
@@ -92,12 +87,12 @@ func birdHandler(httpW http.ResponseWriter, httpR *http.Request) {
 
 // Handles BIRDv6 queries
 func bird6Handler(httpW http.ResponseWriter, httpR *http.Request) {
-	query := string(httpR.URL.Query().Get("q"))
+	query := httpR.URL.Query().Get("q")
 	if query == "" {
 		invalidHandler(httpW, httpR)
 	} else {
 		// Initialize BIRDv6 socket
-		bird6, err := net.Dial("unix", setting.bird6Socket)
+		bird6, err := net.Dial("unix", setting.birdSocket)
 		if err != nil {
 			panic(err)
 		}

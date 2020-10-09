@@ -15,12 +15,12 @@ type channelData struct {
 // Send commands to lgproxy instances in parallel, and retrieve their responses
 func batchRequest(servers []string, endpoint string, command string) []string {
 	// Channel and array for storing responses
-	var ch chan channelData = make(chan channelData)
-	var responseArray []string = make([]string, len(servers))
+	ch := make(chan channelData)
+	responseArray := make([]string, len(servers))
 
 	for i, server := range servers {
 		// Check if the server is in the valid server list passed at startup
-		var isValidServer bool = false
+		var isValidServer = false
 		for _, validServer := range setting.servers {
 			if validServer == server {
 				isValidServer = true

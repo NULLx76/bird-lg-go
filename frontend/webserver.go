@@ -157,6 +157,5 @@ func webServerStart() {
 	http.HandleFunc("/ipv6/traceroute/", webBackendCommunicator("traceroute6", "traceroute"))
 	http.HandleFunc("/whois/", webHandlerWhois)
 	http.HandleFunc("/redir", webHandlerNavbarFormRedirect)
-	http.HandleFunc("/telegram/", webHandlerTelegramBot)
 	log.Fatal(http.ListenAndServe(setting.listen, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
 }
