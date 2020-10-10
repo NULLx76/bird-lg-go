@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-type ProtocolTable []ProtocolRow
+type SummaryTable []PeerRow
 
-type ProtocolRow struct {
+type PeerRow struct {
 	name  string
 	proto string
 	table string
@@ -17,14 +17,19 @@ type ProtocolRow struct {
 	info  string
 }
 
+type PeerDetails struct {
+	header  PeerRow
+	details string
+}
+
 var headerRegex = regexp.MustCompile(`Name\s+Proto\s+Table\s+State\s+Since\s+Info`)
 var columnRegex = regexp.MustCompile(`(\w+)\s+(\w+)\s+([\w-]+)\s+(\w+)\s+([0-9\-]+)\s?(.*)`)
 
-func parseProtocolRow(line string) ProtocolRow {
+func parsePeerRow(line string) PeerRow {
 	split := columnRegex.FindStringSubmatch(line)
 
 	// split[0] == whole string
-	return ProtocolRow{
+	return PeerRow{
 		name:  strings.TrimSpace(split[1]),
 		proto: strings.TrimSpace(split[2]),
 		table: strings.TrimSpace(split[3]),
@@ -34,20 +39,35 @@ func parseProtocolRow(line string) ProtocolRow {
 	}
 }
 
-func parseProtocolTable(str string) (ProtocolTable, error) {
+func parseSummaryTable(str string) (SummaryTable, error) {
 	rows := strings.Split(str, "\n")
 	if !headerRegex.MatchString(rows[0]) {
 		return nil, errors.New("invalid protocol table")
 	}
 
-	var table ProtocolTable
+	var table SummaryTable
 	for i := 0; i < len(rows)-1; i++ {
 		row := strings.TrimSpace(rows[i+1])
 		if row == "" {
 			continue
 		}
-		table = append(table, parseProtocolRow(row))
+		table = append(table, parsePeerRow(row))
 	}
 
 	return table, nil
+}
+
+func parsePeerDetails(str string) (*PeerDetails, error) {
+	details := strings.SplitN(str, "\n", 3)
+	if len(details) != 3 || !headerRegex.MatchString(details[0]) {
+		return nil, errors.New("invalid protocol table")
+	}
+
+	details[1] = strings.TrimSpace(details[1])
+	header := parsePeerRow(details[1])
+
+	return &PeerDetails{
+		header:  header,
+		details: details[2],
+	}, nil
 }

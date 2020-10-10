@@ -10,7 +10,7 @@ import (
 // Returns if there are more lines.
 func birdReadln(bird io.Reader, w io.Writer) bool {
 	// Read from socket byte by byte, until reaching newline character
-	c := make([]byte, 1024, 1024)
+	c := make([]byte, 1024)
 	var pos int
 	for pos = 0; c[pos] != byte('\n'); pos++ {
 		if pos >= 1024 {
