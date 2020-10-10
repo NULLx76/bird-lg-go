@@ -19,6 +19,11 @@ import (
 //		"generic":         "show %s",
 //		"traceroute":      "%s",
 
+const (
+	commandSummary = "show protocols"
+	commandDetails = "show protocols all %s"
+)
+
 func queryBackend(host, command string) (string, error) {
 	uri := host + "/bird" + "?q=" + url.QueryEscape(command)
 	log.Tracef("Querying: %v", uri)
@@ -42,16 +47,31 @@ func queryBackend(host, command string) (string, error) {
 	return str, nil
 }
 
-func Summary(server string) (ProtocolTable, error) {
-	query, err := queryBackend(server, "show protocols")
+func Summary(server string) (SummaryTable, error) {
+	query, err := queryBackend(server, commandSummary)
 	if err != nil {
 		return nil, err
 	}
 
-	tbl, err := parseProtocolTable(query)
+	tbl, err := parseSummaryTable(query)
 	if err != nil {
 		return nil, err
 	}
 
 	return tbl, nil
+}
+
+func Details(server, peer string) (*PeerDetails, error) {
+	cmd := fmt.Sprintf(commandDetails, peer)
+	query, err := queryBackend(server, cmd)
+	if err != nil {
+		return nil, err
+	}
+
+	details, err := parsePeerDetails(query)
+	if err != nil {
+		return nil, err
+	}
+
+	return details, nil
 }

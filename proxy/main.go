@@ -15,9 +15,9 @@ func isNumeric(b byte) bool {
 }
 
 // Default handler, returns 500 Internal Server Error
-func invalidHandler(httpW http.ResponseWriter, _ *http.Request) {
-	httpW.WriteHeader(http.StatusInternalServerError)
-	_, _ = httpW.Write([]byte("Invalid Request\n"))
+func invalidHandler(w http.ResponseWriter, _ *http.Request) {
+	w.WriteHeader(http.StatusInternalServerError)
+	_, _ = w.Write([]byte("Invalid Request\n"))
 }
 
 type settingType struct {

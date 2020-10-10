@@ -18,5 +18,6 @@ func main() {
 
 	for server := range cfg.birdServers {
 		fmt.Println(Summary(cfg.birdServers[server]))
+		fmt.Println(Details(cfg.birdServers[server], "icez"))
 	}
 }
