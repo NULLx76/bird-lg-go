@@ -15,7 +15,7 @@ func get(path string) (int, []byte, error) {
 		return 0, nil, errors.Wrap(err, "error in get from api")
 	}
 	if status != fasthttp.StatusOK {
-		return 0, nil, errors.Errorf("status: %s, msg: %s", status, string(body))
+		return 0, nil, errors.Errorf("status: %d, msg: %s", status, string(body))
 	}
 
 	return status, body, nil
