@@ -1,7 +1,5 @@
 {
   "name": "bird-lg-go",
-  "version": "0.1.0",
-  "license": "MIT",
   "scripts": {
     "generate": "go generate ./..."
   },

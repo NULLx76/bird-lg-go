@@ -16,7 +16,9 @@ Page prints a page implementing Page interface.
 		<link href="/static/style.css" rel="stylesheet">
 	</head>
 	<body>
-		{%= p.Body() %}
+	    <div class="bg-gray-100">
+		    {%= p.Body() %}
+		</div>
 	</body>
 </html>
 {% endfunc %}
