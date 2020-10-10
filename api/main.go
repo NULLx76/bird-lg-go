@@ -26,9 +26,10 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
-	r.Get("/{server}/summary", s.GetSummary)
-	r.Get("/{server}/details/{peer}", s.GetDetails)
-	r.Get("/{server}/route/{route}", s.GetRoute)
+	r.Get("/servers", s.GetServers)
+	r.Get("/server/{server}/summary", s.GetSummary)
+	r.Get("/server/{server}/details/{peer}", s.GetDetails)
+	r.Get("/server/{server}/route/{route}", s.GetRoute)
 
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
