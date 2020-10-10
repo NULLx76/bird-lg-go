@@ -10,7 +10,7 @@ import (
 )
 
 func get(path string) ([]byte, error) {
-	resp, err := http.Get(baseURL+path)
+	resp, err := http.Get(baseURL + path)
 	if err != nil {
 		return nil, errors.Wrap(err, "error in get from api")
 	}
@@ -21,7 +21,7 @@ func get(path string) ([]byte, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, errors.Errorf("%d: %s", resp.Status, string(body))
+		return nil, errors.Errorf("%d: %s", resp.StatusCode, string(body))
 	}
 
 	return body, nil
