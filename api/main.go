@@ -27,7 +27,7 @@ func main() {
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
 	r.Get("/servers", s.GetServers)
-	r.Get("/server/{server}/summary", s.GetSummary)
+	r.Get("/server/{server}", s.GetSummary)
 	r.Get("/server/{server}/details/{peer}", s.GetDetails)
 	r.Get("/server/{server}/route/{route}", s.GetRoute)
 

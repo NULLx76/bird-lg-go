@@ -1,8 +1,14 @@
-{% import "github.com/valyala/fasthttp" %}
+{%
+import (
+    "github.com/valyala/fasthttp"
+    "github.com/NULLx76/bird-lg-go/api/proxy"
+)
+%}
 
 {% code
 type MainPage struct {
 	CTX *fasthttp.RequestCtx
+	Summaries map[string]proxy.SummaryTable
 }
 %}
 
@@ -15,11 +21,28 @@ type MainPage struct {
 {% func (p *MainPage) Body() %}
 	<h1>Main page</h1>
 	<div>
-		Stuff here!
-	</div>
-	<div>
-		Some info about you:<br/>
-		IP: <b>{%s p.CTX.RemoteIP().String() %}</b><br/>
-		User-Agent: <b>{%z p.CTX.UserAgent() %}</b><br/>
+		{% for name, server := range p.Summaries %}
+		    <h2> {%s name %} </h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Proto</th>
+                    <th>Table</th>
+                    <th>State</th>
+                    <th>Since</th>
+                    <th>Info</th>
+                </tr>
+                {% for row := range server %}
+                <tr>
+                    <td>{%s server[row].Name %}</td>
+                    <td>{%s server[row].Proto %}</td>
+                    <td>{%s server[row].Table %}</td>
+                    <td>{%s server[row].State %}</td>
+                    <td>{%s server[row].Since %}</td>
+                    <td>{%s server[row].Info %}</td>
+                </tr>
+                {% endfor %}
+            </table>
+		{% endfor %}
 	</div>
 {% endfunc %}
