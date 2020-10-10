@@ -1,0 +1,21 @@
+{%
+import (
+    "github.com/valyala/fasthttp"
+    "github.com/NULLx76/bird-lg-go/api/proxy"
+)
+%}
+
+{% code
+type RoutePage struct {
+	CTX *fasthttp.RequestCtx
+	Peer *proxy.RouteDetails
+}
+%}
+
+{% func (p *RoutePage) Title() %}
+	Bird Looking Glass -
+{% endfunc %}
+
+{% func (p *RoutePage) Body() %}
+
+{% endfunc %}

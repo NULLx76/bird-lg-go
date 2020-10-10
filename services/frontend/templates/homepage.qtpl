@@ -1,13 +1,11 @@
 {%
 import (
-    "github.com/valyala/fasthttp"
     "github.com/NULLx76/bird-lg-go/api/proxy"
 )
 %}
 
 {% code
 type MainPage struct {
-	CTX *fasthttp.RequestCtx
 	Summaries map[string]proxy.SummaryTable
 }
 %}

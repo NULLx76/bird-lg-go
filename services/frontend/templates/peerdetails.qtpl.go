@@ -6,7 +6,7 @@ package templates
 
 //line templates/peerdetails.qtpl:2
 import (
-	"github.com/NULLx76/bird-lg-go/api/proxy"
+	"github.com/NULLx76/bird-lg-go/pkg/proxy"
 	"github.com/valyala/fasthttp"
 )
 

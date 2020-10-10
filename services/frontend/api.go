@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/NULLx76/bird-lg-go/api/proxy"
+	"github.com/NULLx76/bird-lg-go/pkg/proxy"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
 )
@@ -68,4 +68,21 @@ func GetDetails(server, peer string) (*proxy.PeerDetails, error) {
 	}
 
 	return &details, nil
+}
+
+const getRouteFmt string = "/server/%s/route/%s?all=%t"
+
+func GetRoute(server, address string, all bool) (*proxy.RouteDetails, error) {
+	url := fmt.Sprintf(getRouteFmt, server, address, all)
+	_, body, err := get(url)
+	if err != nil {
+		return nil, errors.Wrap(err, "error getting summary")
+	}
+
+	var route proxy.RouteDetails
+	if err := json.Unmarshal(body, &route); err != nil {
+		return nil, err
+	}
+
+	return &route, nil
 }

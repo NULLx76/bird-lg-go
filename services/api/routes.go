@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/NULLx76/bird-lg-go/api/proxy"
+	"github.com/NULLx76/bird-lg-go/pkg/proxy"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"net/http"
