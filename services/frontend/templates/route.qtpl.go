@@ -7,94 +7,92 @@ package templates
 //line templates/route.qtpl:2
 import (
 	"github.com/NULLx76/bird-lg-go/pkg/proxy"
-	"github.com/valyala/fasthttp"
 )
 
-//line templates/route.qtpl:8
+//line templates/route.qtpl:7
 import (
 	qtio422016 "io"
 
 	qt422016 "github.com/valyala/quicktemplate"
 )
 
-//line templates/route.qtpl:8
+//line templates/route.qtpl:7
 var (
 	_ = qtio422016.Copy
 	_ = qt422016.AcquireByteBuffer
 )
 
-//line templates/route.qtpl:9
+//line templates/route.qtpl:8
 type RoutePage struct {
-	CTX  *fasthttp.RequestCtx
 	Peer *proxy.RouteDetails
 }
 
-//line templates/route.qtpl:15
+//line templates/route.qtpl:13
 func (p *RoutePage) StreamTitle(qw422016 *qt422016.Writer) {
-//line templates/route.qtpl:15
+//line templates/route.qtpl:13
 	qw422016.N().S(`
 	Bird Looking Glass -
 `)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 }
 
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 func (p *RoutePage) WriteTitle(qq422016 qtio422016.Writer) {
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	p.StreamTitle(qw422016)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	qt422016.ReleaseWriter(qw422016)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 }
 
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 func (p *RoutePage) Title() string {
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	p.WriteTitle(qb422016)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	qs422016 := string(qb422016.B)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 	return qs422016
-//line templates/route.qtpl:17
+//line templates/route.qtpl:15
 }
 
-//line templates/route.qtpl:19
+//line templates/route.qtpl:17
 func (p *RoutePage) StreamBody(qw422016 *qt422016.Writer) {
-//line templates/route.qtpl:19
+//line templates/route.qtpl:17
 	qw422016.N().S(`
 
 `)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 }
 
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 func (p *RoutePage) WriteBody(qq422016 qtio422016.Writer) {
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	p.StreamBody(qw422016)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	qt422016.ReleaseWriter(qw422016)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 }
 
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 func (p *RoutePage) Body() string {
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	p.WriteBody(qb422016)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	qs422016 := string(qb422016.B)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 	return qs422016
-//line templates/route.qtpl:21
+//line templates/route.qtpl:19
 }

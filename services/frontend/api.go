@@ -5,25 +5,30 @@ import (
 	"fmt"
 	"github.com/NULLx76/bird-lg-go/pkg/proxy"
 	"github.com/pkg/errors"
-	"github.com/valyala/fasthttp"
+	"io/ioutil"
+	"net/http"
 )
 
-var baseURL = "http://localhost:8000"
-
-func get(path string) (int, []byte, error) {
-	status, body, err := fasthttp.Get(nil, baseURL+path)
+func get(path string) ([]byte, error) {
+	resp, err := http.Get(baseURL+path)
 	if err != nil {
-		return 0, nil, errors.Wrap(err, "error in get from api")
-	}
-	if status != fasthttp.StatusOK {
-		return 0, nil, errors.Errorf("status: %d, msg: %s", status, string(body))
+		return nil, errors.Wrap(err, "error in get from api")
 	}
 
-	return status, body, nil
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.Wrap(err, "couldn't read return body")
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.Errorf("%d: %s", resp.Status, string(body))
+	}
+
+	return body, nil
 }
 
 func GetServers() ([]string, error) {
-	_, body, err := get("/servers")
+	body, err := get("/servers")
 	if err != nil {
 		return nil, errors.Wrap(err, "error getting servers")
 	}
@@ -40,7 +45,7 @@ const getSummaryFmt string = "/server/%s"
 
 func GetSummary(server string) (proxy.SummaryTable, error) {
 	url := fmt.Sprintf(getSummaryFmt, server)
-	_, body, err := get(url)
+	body, err := get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "error getting summary")
 	}
@@ -57,7 +62,7 @@ const getDetailsFmt string = "/server/%s/details/%s"
 
 func GetDetails(server, peer string) (*proxy.PeerDetails, error) {
 	url := fmt.Sprintf(getDetailsFmt, server, peer)
-	_, body, err := get(url)
+	body, err := get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "error getting summary")
 	}
@@ -74,7 +79,7 @@ const getRouteFmt string = "/server/%s/route/%s?all=%t"
 
 func GetRoute(server, address string, all bool) (*proxy.RouteDetails, error) {
 	url := fmt.Sprintf(getRouteFmt, server, address, all)
-	_, body, err := get(url)
+	body, err := get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "error getting summary")
 	}

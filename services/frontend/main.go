@@ -14,6 +14,8 @@ import (
 //go:generate yarn build
 //go:generate yarn minify
 
+var baseURL = "http://localhost:8000"
+
 func main() {
 	addr := ":8080"
 

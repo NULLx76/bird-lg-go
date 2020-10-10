@@ -1,6 +1,6 @@
 {%
 import (
-    "github.com/NULLx76/bird-lg-go/api/proxy"
+    "github.com/NULLx76/bird-lg-go/pkg/proxy"
 )
 %}
 

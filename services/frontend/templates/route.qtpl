@@ -1,13 +1,11 @@
 {%
 import (
-    "github.com/valyala/fasthttp"
-    "github.com/NULLx76/bird-lg-go/api/proxy"
+    "github.com/NULLx76/bird-lg-go/pkg/proxy"
 )
 %}
 
 {% code
 type RoutePage struct {
-	CTX *fasthttp.RequestCtx
 	Peer *proxy.RouteDetails
 }
 %}
