@@ -1,4 +1,4 @@
-package comm
+package proxy
 
 import (
 	"github.com/pkg/errors"

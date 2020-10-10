@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bird-lg-go/api/comm"
+	"github.com/NULLx76/bird-lg-go/api/proxy"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"net/http"
@@ -44,7 +44,7 @@ func (s *Routes) GetSummary(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	summ, err := comm.Summary(bird)
+	summ, err := proxy.Summary(bird)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -63,7 +63,7 @@ func (s *Routes) GetDetails(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	details, err := comm.Details(bird, peer)
+	details, err := proxy.Details(bird, peer)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -88,7 +88,7 @@ func (s *Routes) GetRoute(w http.ResponseWriter, r *http.Request) {
 		all = true
 	}
 
-	routeDetails, err := comm.Route(bird, route, all)
+	routeDetails, err := proxy.Route(bird, route, all)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

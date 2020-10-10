@@ -2,11 +2,12 @@ package main
 
 import (
 	"flag"
+	"github.com/go-chi/chi/middleware"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/gorilla/handlers"
+	"github.com/go-chi/chi"
 )
 
 // Check if a byte is character for number
@@ -16,8 +17,7 @@ func isNumeric(b byte) bool {
 
 // Default handler, returns 500 Internal Server Error
 func invalidHandler(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(http.StatusInternalServerError)
-	_, _ = w.Write([]byte("Invalid Request\n"))
+	http.Error(w, "Invalid Request", http.StatusInternalServerError)
 }
 
 type settingType struct {
@@ -50,13 +50,16 @@ func main() {
 	setting.birdSocket = *birdParam
 	setting.listen = *listenParam
 
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
 	// Start HTTP server
-	http.HandleFunc("/", invalidHandler)
-	http.HandleFunc("/bird", birdHandler)
-	http.HandleFunc("/bird6", birdHandler) // for backwards compat
+	r.HandleFunc("/", invalidHandler)
+	r.HandleFunc("/bird", birdHandler)
 
-	http.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
-	http.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
+	r.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
+	r.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
 
-	log.Fatal(http.ListenAndServe(*listenParam, handlers.LoggingHandler(os.Stdout, http.DefaultServeMux)))
+	log.Fatal(http.ListenAndServe(*listenParam, r))
 }
