@@ -20,8 +20,10 @@ import (
 //		"traceroute":      "%s",
 
 const (
-	commandSummary = "show protocols"
-	commandDetails = "show protocols all %s"
+	commandSummary  = "show protocols"
+	commandDetails  = "show protocols all %s"
+	commandRoute    = "show route for %s"
+	commandRouteAll = "show route for %s all"
 )
 
 func queryBackend(host, command string) (string, error) {
@@ -74,4 +76,25 @@ func Details(server, peer string) (*PeerDetails, error) {
 	}
 
 	return details, nil
+}
+
+func Route(server, address string, all bool) (*RouteDetails, error) {
+	var cmd string
+	if all {
+		cmd = fmt.Sprintf(commandRouteAll, address)
+	} else {
+		cmd = fmt.Sprintf(commandRoute, address)
+	}
+
+	query, err := queryBackend(server, cmd)
+	if err != nil {
+		return nil, err
+	}
+
+	details := RouteDetails{
+		address: address,
+		details: query,
+	}
+
+	return &details, nil
 }

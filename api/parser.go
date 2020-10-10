@@ -22,8 +22,13 @@ type PeerDetails struct {
 	details string
 }
 
+type RouteDetails struct {
+	address string
+	details string
+}
+
 var headerRegex = regexp.MustCompile(`Name\s+Proto\s+Table\s+State\s+Since\s+Info`)
-var columnRegex = regexp.MustCompile(`(\w+)\s+(\w+)\s+([\w-]+)\s+(\w+)\s+([0-9\-]+)\s?(.*)`)
+var columnRegex = regexp.MustCompile(`(\w+)\s+(\w+)\s+([\w-]+)\s+(\w+)\s+([0-9\-.:]+)\s?(.*)`)
 
 func parsePeerRow(line string) PeerRow {
 	split := columnRegex.FindStringSubmatch(line)
