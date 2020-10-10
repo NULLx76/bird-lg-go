@@ -13,11 +13,9 @@ Page prints a page implementing Page interface.
 <html>
 	<head>
 		<title>{%= p.Title() %}</title>
+		<link href="/static/style.css" rel="stylesheet">
 	</head>
 	<body>
-		<div>
-			<a href="/">return to main page</a>
-		</div>
 		{%= p.Body() %}
 	</body>
 </html>
@@ -27,4 +25,4 @@ Page prints a page implementing Page interface.
 Base page implementation. Other pages may inherit from it if they need
 overriding only certain Page methods
 {% code type BasePage struct {} %}
-{% func (p *BasePage) Title() %}This is a base title{% endfunc %}
+{% func (p *BasePage) Title() %}Bird Looking Glass{% endfunc %}

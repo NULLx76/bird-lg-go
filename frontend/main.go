@@ -4,9 +4,13 @@ import (
 	"github.com/NULLx76/bird-lg-go/frontend/templates"
 	log "github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp"
+	"strings"
 )
 
 //go:generate qtc -dir=templates
+//go:generate npx tailwindcss build css/style.pcss -o build/style.css
+
+var staticFilesHandler = fasthttp.FSHandler("/home/victor/src/bird-lg-go/frontend/build", 1)
 
 func main() {
 	log.Info("starting the server at http://localhost:8080 ...")
@@ -15,8 +19,11 @@ func main() {
 }
 
 func requestHandler(ctx *fasthttp.RequestCtx) {
-	switch string(ctx.Path()) {
-	case "/":
+	path := string(ctx.Path())
+	switch {
+	case strings.HasPrefix(path, "/static"):
+		staticFilesHandler(ctx)
+	case path == "/":
 		fallthrough
 	default:
 		mainPageHandler(ctx)
