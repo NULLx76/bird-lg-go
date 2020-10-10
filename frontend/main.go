@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/NULLx76/bird-lg-go/api/proxy"
 	"github.com/NULLx76/bird-lg-go/frontend/templates"
 	"github.com/fasthttp/router"
@@ -18,6 +19,9 @@ func main() {
 
 	r := router.New()
 	r.GET("/", html(mainPageHandler))
+	r.GET("/{server}/details/{peer}", html(peerPageHandler))
+
+	// Static files
 	r.ServeFiles("/static/{filepath:*}", "frontend/build")
 
 	log.Fatal(fasthttp.ListenAndServe(addr, r.Handler))
@@ -52,6 +56,23 @@ func mainPageHandler(ctx *fasthttp.RequestCtx) {
 	p := &templates.MainPage{
 		CTX:       ctx,
 		Summaries: summaries,
+	}
+	templates.WritePageTemplate(ctx, p)
+}
+
+func peerPageHandler(ctx *fasthttp.RequestCtx) {
+	server := fmt.Sprintf("%s", ctx.UserValue("server"))
+	peer := fmt.Sprintf("%s", ctx.UserValue("peer"))
+
+	details, err := GetDetails(server, peer)
+	if err != nil {
+		ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+		return
+	}
+
+	p := &templates.PeerPage{
+		CTX:  ctx,
+		Peer: details,
 	}
 	templates.WritePageTemplate(ctx, p)
 }

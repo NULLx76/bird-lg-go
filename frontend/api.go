@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/NULLx76/bird-lg-go/api/proxy"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
@@ -35,8 +36,11 @@ func GetServers() ([]string, error) {
 	return servers, nil
 }
 
+const getSummaryFmt string = "/server/%s"
+
 func GetSummary(server string) (proxy.SummaryTable, error) {
-	_, body, err := get("/server/" + server)
+	url := fmt.Sprintf(getSummaryFmt, server)
+	_, body, err := get(url)
 	if err != nil {
 		return nil, errors.Wrap(err, "error getting summary")
 	}
@@ -47,4 +51,21 @@ func GetSummary(server string) (proxy.SummaryTable, error) {
 	}
 
 	return summ, nil
+}
+
+const getDetailsFmt string = "/server/%s/details/%s"
+
+func GetDetails(server, peer string) (*proxy.PeerDetails, error) {
+	url := fmt.Sprintf(getDetailsFmt, server, peer)
+	_, body, err := get(url)
+	if err != nil {
+		return nil, errors.Wrap(err, "error getting summary")
+	}
+
+	var details proxy.PeerDetails
+	if err := json.Unmarshal(body, &details); err != nil {
+		return nil, err
+	}
+
+	return &details, nil
 }

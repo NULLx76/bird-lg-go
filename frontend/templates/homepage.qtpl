@@ -14,7 +14,7 @@ type MainPage struct {
 
 
 {% func (p *MainPage) Title() %}
-	This is the main page
+	Bird Looking Glass
 {% endfunc %}
 
 
@@ -34,7 +34,7 @@ type MainPage struct {
             </tr>
             {% for row := range server %}
             <tr>
-                <td>{%s server[row].Name %}</td>
+                <td><a href="/{%s name %}/details/{%s server[row].Name %}"> {%s server[row].Name %} </a></td>
                 <td>{%s server[row].Proto %}</td>
                 <td>{%s server[row].Table %}</td>
                 <td>{%s server[row].State %}</td>

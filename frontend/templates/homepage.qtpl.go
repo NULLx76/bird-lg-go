@@ -33,7 +33,7 @@ type MainPage struct {
 func (p *MainPage) StreamTitle(qw422016 *qt422016.Writer) {
 //line templates/homepage.qtpl:16
 	qw422016.N().S(`
-	This is the main page
+	Bird Looking Glass
 `)
 //line templates/homepage.qtpl:18
 }
@@ -95,11 +95,19 @@ func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
 //line templates/homepage.qtpl:35
 			qw422016.N().S(`
             <tr>
-                <td>`)
+                <td><a href="/`)
+//line templates/homepage.qtpl:37
+			qw422016.E().S(name)
+//line templates/homepage.qtpl:37
+			qw422016.N().S(`/details/`)
 //line templates/homepage.qtpl:37
 			qw422016.E().S(server[row].Name)
 //line templates/homepage.qtpl:37
-			qw422016.N().S(`</td>
+			qw422016.N().S(`"> `)
+//line templates/homepage.qtpl:37
+			qw422016.E().S(server[row].Name)
+//line templates/homepage.qtpl:37
+			qw422016.N().S(` </a></td>
                 <td>`)
 //line templates/homepage.qtpl:38
 			qw422016.E().S(server[row].Proto)
