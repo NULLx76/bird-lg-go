@@ -1,9 +1,11 @@
 {
   "name": "bird-lg-go",
   "scripts": {
-    "generate": "go generate ./..."
+    "build": "tailwindcss build css/style.pcss -o build/style.css",
+    "minify": "csso build/style.css --output build/style.min.css"
   },
   "devDependencies": {
+    "csso-cli": "^3.0.0",
     "tailwindcss": "^1.8.13"
   }
 }

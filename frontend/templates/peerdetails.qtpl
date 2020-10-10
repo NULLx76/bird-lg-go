@@ -16,7 +16,6 @@ type PeerPage struct {
 	Bird Looking Glass - {%s p.Peer.Info.Name %}
 {% endfunc %}
 
-
 {% func (p *PeerPage) Body() %}
 	<h2 class="p-3">Peer Details</h2>
 	<table>

@@ -68,9 +68,9 @@ func (p *PeerPage) Title() string {
 //line templates/peerdetails.qtpl:17
 }
 
-//line templates/peerdetails.qtpl:20
+//line templates/peerdetails.qtpl:19
 func (p *PeerPage) StreamBody(qw422016 *qt422016.Writer) {
-//line templates/peerdetails.qtpl:20
+//line templates/peerdetails.qtpl:19
 	qw422016.N().S(`
 	<h2 class="p-3">Peer Details</h2>
 	<table>
@@ -84,80 +84,80 @@ func (p *PeerPage) StreamBody(qw422016 *qt422016.Writer) {
         </tr>
         <tr>
             <td>`)
-//line templates/peerdetails.qtpl:32
+//line templates/peerdetails.qtpl:31
 	qw422016.E().S(p.Peer.Info.Name)
+//line templates/peerdetails.qtpl:31
+	qw422016.N().S(`</td>
+            <td>`)
+//line templates/peerdetails.qtpl:32
+	qw422016.E().S(p.Peer.Info.Proto)
 //line templates/peerdetails.qtpl:32
 	qw422016.N().S(`</td>
             <td>`)
 //line templates/peerdetails.qtpl:33
-	qw422016.E().S(p.Peer.Info.Proto)
+	qw422016.E().S(p.Peer.Info.Table)
 //line templates/peerdetails.qtpl:33
 	qw422016.N().S(`</td>
             <td>`)
 //line templates/peerdetails.qtpl:34
-	qw422016.E().S(p.Peer.Info.Table)
+	qw422016.E().S(p.Peer.Info.State)
 //line templates/peerdetails.qtpl:34
 	qw422016.N().S(`</td>
             <td>`)
 //line templates/peerdetails.qtpl:35
-	qw422016.E().S(p.Peer.Info.State)
+	qw422016.E().S(p.Peer.Info.Since)
 //line templates/peerdetails.qtpl:35
 	qw422016.N().S(`</td>
             <td>`)
 //line templates/peerdetails.qtpl:36
-	qw422016.E().S(p.Peer.Info.Since)
-//line templates/peerdetails.qtpl:36
-	qw422016.N().S(`</td>
-            <td>`)
-//line templates/peerdetails.qtpl:37
 	qw422016.E().S(p.Peer.Info.Info)
-//line templates/peerdetails.qtpl:37
+//line templates/peerdetails.qtpl:36
 	qw422016.N().S(`</td>
         </tr>
 	</table>
 	`)
-//line templates/peerdetails.qtpl:40
+//line templates/peerdetails.qtpl:39
 	if p.Peer.Details != "" {
-//line templates/peerdetails.qtpl:40
+//line templates/peerdetails.qtpl:39
 		qw422016.N().S(`
 	<pre>
 `)
-//line templates/peerdetails.qtpl:42
+//line templates/peerdetails.qtpl:41
 		qw422016.E().S(p.Peer.Details)
-//line templates/peerdetails.qtpl:42
+//line templates/peerdetails.qtpl:41
 		qw422016.N().S(`
 	</pre>
 	`)
-//line templates/peerdetails.qtpl:44
+//line templates/peerdetails.qtpl:43
 	}
-//line templates/peerdetails.qtpl:44
+//line templates/peerdetails.qtpl:43
 	qw422016.N().S(`
 `)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 }
 
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 func (p *PeerPage) WriteBody(qq422016 qtio422016.Writer) {
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	p.StreamBody(qw422016)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	qt422016.ReleaseWriter(qw422016)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 }
 
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 func (p *PeerPage) Body() string {
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	p.WriteBody(qb422016)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	qs422016 := string(qb422016.B)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 	return qs422016
-//line templates/peerdetails.qtpl:45
+//line templates/peerdetails.qtpl:44
 }

@@ -39,94 +39,94 @@ type Page interface {
 
 // Page prints a page implementing Page interface.
 
-//line templates/basepage.qtpl:12
+//line templates/basepage.qtpl:11
 func StreamPageTemplate(qw422016 *qt422016.Writer, p Page) {
-//line templates/basepage.qtpl:12
+//line templates/basepage.qtpl:11
 	qw422016.N().S(`
 <html>
 	<head>
 		<title>`)
-//line templates/basepage.qtpl:15
+//line templates/basepage.qtpl:14
 	p.StreamTitle(qw422016)
-//line templates/basepage.qtpl:15
+//line templates/basepage.qtpl:14
 	qw422016.N().S(`</title>
-		<link href="/static/style.css" rel="stylesheet">
+		<link href="/static/style.min.css" rel="stylesheet">
 	</head>
 	<body>
 	    <div class="min-h-screen flex items-center flex-col justify-center bg-gray-100 sm:px-6 lg:px-8 rounded-md">
 		    `)
-//line templates/basepage.qtpl:20
+//line templates/basepage.qtpl:19
 	p.StreamBody(qw422016)
-//line templates/basepage.qtpl:20
+//line templates/basepage.qtpl:19
 	qw422016.N().S(`
 		</div>
 	</body>
 </html>
 `)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 }
 
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 func WritePageTemplate(qq422016 qtio422016.Writer, p Page) {
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	StreamPageTemplate(qw422016, p)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	qt422016.ReleaseWriter(qw422016)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 }
 
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 func PageTemplate(p Page) string {
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	WritePageTemplate(qb422016, p)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	qs422016 := string(qb422016.B)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 	return qs422016
-//line templates/basepage.qtpl:24
+//line templates/basepage.qtpl:23
 }
 
 // Base page implementation. Other pages may inherit from it if they need
 // overriding only certain Page methods
 
-//line templates/basepage.qtpl:29
+//line templates/basepage.qtpl:27
 type BasePage struct{}
 
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 func (p *BasePage) StreamTitle(qw422016 *qt422016.Writer) {
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	qw422016.N().S(`Bird Looking Glass`)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 }
 
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 func (p *BasePage) WriteTitle(qq422016 qtio422016.Writer) {
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	p.StreamTitle(qw422016)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	qt422016.ReleaseWriter(qw422016)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 }
 
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 func (p *BasePage) Title() string {
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	p.WriteTitle(qb422016)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	qs422016 := string(qb422016.B)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 	return qs422016
-//line templates/basepage.qtpl:30
+//line templates/basepage.qtpl:28
 }

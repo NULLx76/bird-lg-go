@@ -29,56 +29,56 @@ type MainPage struct {
 	Summaries map[string]proxy.SummaryTable
 }
 
-//line templates/homepage.qtpl:16
+//line templates/homepage.qtpl:15
 func (p *MainPage) StreamTitle(qw422016 *qt422016.Writer) {
-//line templates/homepage.qtpl:16
+//line templates/homepage.qtpl:15
 	qw422016.N().S(`
 	Bird Looking Glass
 `)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 }
 
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 func (p *MainPage) WriteTitle(qq422016 qtio422016.Writer) {
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	p.StreamTitle(qw422016)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	qt422016.ReleaseWriter(qw422016)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 }
 
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 func (p *MainPage) Title() string {
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	p.WriteTitle(qb422016)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	qs422016 := string(qb422016.B)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 	return qs422016
-//line templates/homepage.qtpl:18
+//line templates/homepage.qtpl:17
 }
 
-//line templates/homepage.qtpl:21
+//line templates/homepage.qtpl:19
 func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
-//line templates/homepage.qtpl:21
+//line templates/homepage.qtpl:19
 	qw422016.N().S(`
 	<h1>dn42 Looking Glass</h1>
     `)
-//line templates/homepage.qtpl:23
+//line templates/homepage.qtpl:21
 	for name, server := range p.Summaries {
-//line templates/homepage.qtpl:23
+//line templates/homepage.qtpl:21
 		qw422016.N().S(`
     <div class="text-center">
         <h2 class="p-3">Server: `)
-//line templates/homepage.qtpl:25
+//line templates/homepage.qtpl:23
 		qw422016.E().S(name)
-//line templates/homepage.qtpl:25
+//line templates/homepage.qtpl:23
 		qw422016.N().S(`</h2>
         <table>
             <tr>
@@ -90,88 +90,88 @@ func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
                 <th>Info</th>
             </tr>
             `)
-//line templates/homepage.qtpl:35
+//line templates/homepage.qtpl:33
 		for row := range server {
-//line templates/homepage.qtpl:35
+//line templates/homepage.qtpl:33
 			qw422016.N().S(`
             <tr>
                 <td><a href="/`)
-//line templates/homepage.qtpl:37
+//line templates/homepage.qtpl:35
 			qw422016.E().S(name)
-//line templates/homepage.qtpl:37
+//line templates/homepage.qtpl:35
 			qw422016.N().S(`/details/`)
-//line templates/homepage.qtpl:37
+//line templates/homepage.qtpl:35
 			qw422016.E().S(server[row].Name)
-//line templates/homepage.qtpl:37
+//line templates/homepage.qtpl:35
 			qw422016.N().S(`"> `)
-//line templates/homepage.qtpl:37
+//line templates/homepage.qtpl:35
 			qw422016.E().S(server[row].Name)
-//line templates/homepage.qtpl:37
+//line templates/homepage.qtpl:35
 			qw422016.N().S(` </a></td>
                 <td>`)
-//line templates/homepage.qtpl:38
+//line templates/homepage.qtpl:36
 			qw422016.E().S(server[row].Proto)
+//line templates/homepage.qtpl:36
+			qw422016.N().S(`</td>
+                <td>`)
+//line templates/homepage.qtpl:37
+			qw422016.E().S(server[row].Table)
+//line templates/homepage.qtpl:37
+			qw422016.N().S(`</td>
+                <td>`)
+//line templates/homepage.qtpl:38
+			qw422016.E().S(server[row].State)
 //line templates/homepage.qtpl:38
 			qw422016.N().S(`</td>
                 <td>`)
 //line templates/homepage.qtpl:39
-			qw422016.E().S(server[row].Table)
+			qw422016.E().S(server[row].Since)
 //line templates/homepage.qtpl:39
 			qw422016.N().S(`</td>
                 <td>`)
 //line templates/homepage.qtpl:40
-			qw422016.E().S(server[row].State)
-//line templates/homepage.qtpl:40
-			qw422016.N().S(`</td>
-                <td>`)
-//line templates/homepage.qtpl:41
-			qw422016.E().S(server[row].Since)
-//line templates/homepage.qtpl:41
-			qw422016.N().S(`</td>
-                <td>`)
-//line templates/homepage.qtpl:42
 			qw422016.E().S(server[row].Info)
-//line templates/homepage.qtpl:42
+//line templates/homepage.qtpl:40
 			qw422016.N().S(`</td>
             </tr>
             `)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:42
 		}
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:42
 		qw422016.N().S(`
         </table>
     </div>
     `)
-//line templates/homepage.qtpl:47
+//line templates/homepage.qtpl:45
 	}
-//line templates/homepage.qtpl:47
+//line templates/homepage.qtpl:45
 	qw422016.N().S(`
 `)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 }
 
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 func (p *MainPage) WriteBody(qq422016 qtio422016.Writer) {
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	p.StreamBody(qw422016)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	qt422016.ReleaseWriter(qw422016)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 }
 
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 func (p *MainPage) Body() string {
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	p.WriteBody(qb422016)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	qs422016 := string(qb422016.B)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 	return qs422016
-//line templates/homepage.qtpl:48
+//line templates/homepage.qtpl:46
 }

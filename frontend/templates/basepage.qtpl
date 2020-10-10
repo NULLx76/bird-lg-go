@@ -7,13 +7,12 @@ Page {
 }
 %}
 
-
 Page prints a page implementing Page interface.
 {% func PageTemplate(p Page) %}
 <html>
 	<head>
 		<title>{%= p.Title() %}</title>
-		<link href="/static/style.css" rel="stylesheet">
+		<link href="/static/style.min.css" rel="stylesheet">
 	</head>
 	<body>
 	    <div class="min-h-screen flex items-center flex-col justify-center bg-gray-100 sm:px-6 lg:px-8 rounded-md">
@@ -22,7 +21,6 @@ Page prints a page implementing Page interface.
 	</body>
 </html>
 {% endfunc %}
-
 
 Base page implementation. Other pages may inherit from it if they need
 overriding only certain Page methods

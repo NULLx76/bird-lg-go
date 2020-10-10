@@ -12,11 +12,9 @@ type MainPage struct {
 }
 %}
 
-
 {% func (p *MainPage) Title() %}
 	Bird Looking Glass
 {% endfunc %}
-
 
 {% func (p *MainPage) Body() %}
 	<h1>dn42 Looking Glass</h1>

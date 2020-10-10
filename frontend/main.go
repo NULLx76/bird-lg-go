@@ -10,7 +10,8 @@ import (
 )
 
 //go:generate qtc -dir=templates
-//go:generate npx tailwindcss build css/style.pcss -o build/style.css
+//go:generate yarn build
+//go:generate yarn minify
 
 func main() {
 	addr := ":8080"
