@@ -3,35 +3,31 @@ package main
 import (
 	"github.com/NULLx76/bird-lg-go/api/proxy"
 	"github.com/NULLx76/bird-lg-go/frontend/templates"
+	"github.com/fasthttp/router"
 	log "github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp"
-	"strings"
 )
 
 //go:generate qtc -dir=templates
 //go:generate npx tailwindcss build css/style.pcss -o build/style.css
-
-var staticFilesHandler = fasthttp.FSHandler("/home/victor/src/bird-lg-go/frontend/build", 1)
 
 func main() {
 	addr := ":8080"
 
 	log.Infof("starting the server at %s ...", addr)
 
-	log.Fatal(fasthttp.ListenAndServe(addr, requestHandler))
+	r := router.New()
+	r.GET("/", html(mainPageHandler))
+	r.ServeFiles("/static/{filepath:*}", "frontend/build")
+
+	log.Fatal(fasthttp.ListenAndServe(addr, r.Handler))
 }
 
-func requestHandler(ctx *fasthttp.RequestCtx) {
-	path := string(ctx.Path())
-	switch {
-	case strings.HasPrefix(path, "/static"):
-		staticFilesHandler(ctx)
-	case path == "/":
-		fallthrough
-	default:
-		mainPageHandler(ctx)
+func html(h fasthttp.RequestHandler) fasthttp.RequestHandler {
+	return func(ctx *fasthttp.RequestCtx) {
+		ctx.SetContentType("text/html; charset=utf-8")
+		h(ctx)
 	}
-	ctx.SetContentType("text/html; charset=utf-8")
 }
 
 func mainPageHandler(ctx *fasthttp.RequestCtx) {

@@ -68,76 +68,76 @@ func (p *MainPage) Title() string {
 func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
 //line templates/homepage.qtpl:21
 	qw422016.N().S(`
-	<h1>Main page</h1>
-	<div>
-		`)
-//line templates/homepage.qtpl:24
+	<h1>dn42 Looking Glass</h1>
+    `)
+//line templates/homepage.qtpl:23
 	for name, server := range p.Summaries {
-//line templates/homepage.qtpl:24
+//line templates/homepage.qtpl:23
 		qw422016.N().S(`
-		    <h2> `)
+    <div class="text-center">
+        <h2 class="p-3">Server: `)
 //line templates/homepage.qtpl:25
 		qw422016.E().S(name)
 //line templates/homepage.qtpl:25
-		qw422016.N().S(` </h2>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Proto</th>
-                    <th>Table</th>
-                    <th>State</th>
-                    <th>Since</th>
-                    <th>Info</th>
-                </tr>
-                `)
+		qw422016.N().S(`</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Proto</th>
+                <th>Table</th>
+                <th>State</th>
+                <th>Since</th>
+                <th>Info</th>
+            </tr>
+            `)
 //line templates/homepage.qtpl:35
 		for row := range server {
 //line templates/homepage.qtpl:35
 			qw422016.N().S(`
-                <tr>
-                    <td>`)
+            <tr>
+                <td>`)
 //line templates/homepage.qtpl:37
 			qw422016.E().S(server[row].Name)
 //line templates/homepage.qtpl:37
 			qw422016.N().S(`</td>
-                    <td>`)
+                <td>`)
 //line templates/homepage.qtpl:38
 			qw422016.E().S(server[row].Proto)
 //line templates/homepage.qtpl:38
 			qw422016.N().S(`</td>
-                    <td>`)
+                <td>`)
 //line templates/homepage.qtpl:39
 			qw422016.E().S(server[row].Table)
 //line templates/homepage.qtpl:39
 			qw422016.N().S(`</td>
-                    <td>`)
+                <td>`)
 //line templates/homepage.qtpl:40
 			qw422016.E().S(server[row].State)
 //line templates/homepage.qtpl:40
 			qw422016.N().S(`</td>
-                    <td>`)
+                <td>`)
 //line templates/homepage.qtpl:41
 			qw422016.E().S(server[row].Since)
 //line templates/homepage.qtpl:41
 			qw422016.N().S(`</td>
-                    <td>`)
+                <td>`)
 //line templates/homepage.qtpl:42
 			qw422016.E().S(server[row].Info)
 //line templates/homepage.qtpl:42
 			qw422016.N().S(`</td>
-                </tr>
-                `)
+            </tr>
+            `)
 //line templates/homepage.qtpl:44
 		}
 //line templates/homepage.qtpl:44
 		qw422016.N().S(`
-            </table>
-		`)
-//line templates/homepage.qtpl:46
+        </table>
+    </div>
+    `)
+//line templates/homepage.qtpl:47
 	}
-//line templates/homepage.qtpl:46
+//line templates/homepage.qtpl:47
 	qw422016.N().S(`
-	</div>
 `)
 //line templates/homepage.qtpl:48
 }

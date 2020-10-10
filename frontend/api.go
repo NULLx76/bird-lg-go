@@ -7,7 +7,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-var baseURL string = "http://localhost:8000"
+var baseURL = "http://localhost:8000"
 
 func get(path string) (int, []byte, error) {
 	status, body, err := fasthttp.Get(nil, baseURL+path)

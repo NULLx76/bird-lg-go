@@ -53,7 +53,7 @@ func StreamPageTemplate(qw422016 *qt422016.Writer, p Page) {
 		<link href="/static/style.css" rel="stylesheet">
 	</head>
 	<body>
-	    <div class="bg-gray-100">
+	    <div class="min-h-screen flex items-center flex-col justify-center bg-gray-100 sm:px-6 lg:px-8 rounded-md">
 		    `)
 //line templates/basepage.qtpl:20
 	p.StreamBody(qw422016)

@@ -19,30 +19,30 @@ type MainPage struct {
 
 
 {% func (p *MainPage) Body() %}
-	<h1>Main page</h1>
-	<div>
-		{% for name, server := range p.Summaries %}
-		    <h2> {%s name %} </h2>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Proto</th>
-                    <th>Table</th>
-                    <th>State</th>
-                    <th>Since</th>
-                    <th>Info</th>
-                </tr>
-                {% for row := range server %}
-                <tr>
-                    <td>{%s server[row].Name %}</td>
-                    <td>{%s server[row].Proto %}</td>
-                    <td>{%s server[row].Table %}</td>
-                    <td>{%s server[row].State %}</td>
-                    <td>{%s server[row].Since %}</td>
-                    <td>{%s server[row].Info %}</td>
-                </tr>
-                {% endfor %}
-            </table>
-		{% endfor %}
-	</div>
+	<h1>dn42 Looking Glass</h1>
+    {% for name, server := range p.Summaries %}
+    <div class="text-center">
+        <h2 class="p-3">Server: {%s name %}</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Proto</th>
+                <th>Table</th>
+                <th>State</th>
+                <th>Since</th>
+                <th>Info</th>
+            </tr>
+            {% for row := range server %}
+            <tr>
+                <td>{%s server[row].Name %}</td>
+                <td>{%s server[row].Proto %}</td>
+                <td>{%s server[row].Table %}</td>
+                <td>{%s server[row].State %}</td>
+                <td>{%s server[row].Since %}</td>
+                <td>{%s server[row].Info %}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
 {% endfunc %}
