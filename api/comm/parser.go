@@ -1,7 +1,8 @@
-package main
+package comm
 
 import (
-	"errors"
+	"github.com/pkg/errors"
+	"net/http"
 	"regexp"
 	"strings"
 )
@@ -9,22 +10,34 @@ import (
 type SummaryTable []PeerRow
 
 type PeerRow struct {
-	name  string
-	proto string
-	table string
-	state string
-	since string
-	info  string
+	Name  string `json:"name"`
+	Proto string `json:"proto"`
+	Table string `json:"table"`
+	State string `json:"state"`
+	Since string `json:"since"`
+	Info  string `json:"info"`
+}
+
+func (SummaryTable) Render(http.ResponseWriter, *http.Request) error {
+	return nil
 }
 
 type PeerDetails struct {
-	header  PeerRow
-	details string
+	Info    PeerRow `json:"info"`
+	Details string  `json:"details"`
+}
+
+func (PeerDetails) Render(http.ResponseWriter, *http.Request) error {
+	return nil
 }
 
 type RouteDetails struct {
-	address string
-	details string
+	Address string `json:"address"`
+	Details string `json:"details"`
+}
+
+func (RouteDetails) Render(http.ResponseWriter, *http.Request) error {
+	return nil
 }
 
 var headerRegex = regexp.MustCompile(`Name\s+Proto\s+Table\s+State\s+Since\s+Info`)
@@ -35,12 +48,12 @@ func parsePeerRow(line string) PeerRow {
 
 	// split[0] == whole string
 	return PeerRow{
-		name:  strings.TrimSpace(split[1]),
-		proto: strings.TrimSpace(split[2]),
-		table: strings.TrimSpace(split[3]),
-		state: strings.TrimSpace(split[4]),
-		since: strings.TrimSpace(split[5]),
-		info:  strings.TrimSpace(split[6]),
+		Name:  strings.TrimSpace(split[1]),
+		Proto: strings.TrimSpace(split[2]),
+		Table: strings.TrimSpace(split[3]),
+		State: strings.TrimSpace(split[4]),
+		Since: strings.TrimSpace(split[5]),
+		Info:  strings.TrimSpace(split[6]),
 	}
 }
 
@@ -72,7 +85,7 @@ func parsePeerDetails(str string) (*PeerDetails, error) {
 	header := parsePeerRow(details[1])
 
 	return &PeerDetails{
-		header:  header,
-		details: details[2],
+		Info:    header,
+		Details: details[2],
 	}, nil
 }

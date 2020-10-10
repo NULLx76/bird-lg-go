@@ -1,24 +1,34 @@
 package main
 
 import (
-	"fmt"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/render"
 	log "github.com/sirupsen/logrus"
+	"net/http"
 )
 
-type config struct {
-	birdServers []string
+type Config struct {
+	birdServers map[string]string
 }
 
 func main() {
-	cfg := config{
-		birdServers: []string{"http://dn42:8000"},
+	cfg := &Config{
+		birdServers: map[string]string{
+			"xirion": "http://dn42:8000",
+		},
 	}
 
-	log.Tracef("config %v", cfg)
+	s := NewRoutes(cfg)
 
-	for server := range cfg.birdServers {
-		//fmt.Println(Summary(cfg.birdServers[server]))
-		//fmt.Println(Details(cfg.birdServers[server], "icez"))
-		fmt.Println(Route(cfg.birdServers[server], "172.20.0.53", true))
-	}
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(render.SetContentType(render.ContentTypeJSON))
+
+	r.Get("/{server}/summary", s.GetSummary)
+	r.Get("/{server}/details/{peer}", s.GetDetails)
+	r.Get("/{server}/route/{route}", s.GetRoute)
+
+	log.Fatal(http.ListenAndServe(":8000", r))
 }
