@@ -1,7 +1,8 @@
-package main
+package comm
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
@@ -28,22 +29,22 @@ const (
 
 func queryBackend(host, command string) (string, error) {
 	uri := host + "/bird" + "?q=" + url.QueryEscape(command)
-	log.Tracef("Querying: %v", uri)
+	log.Tracef("Querying %s with %s", host, uri)
 
 	res, err := http.Get(uri)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "Querying proxy failed")
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", err
+		return "", errors.Wrap(err, "Reading proxy response failed")
 	}
 
 	str := string(b)
 
 	if res.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("host: %v, status: %v, command: %v, msg: %v", host, res.StatusCode, command, str)
+		return "", errors.Errorf("host: %v, status: %v, command: %v, msg: %v", host, res.StatusCode, command, str)
 	}
 
 	return str, nil
@@ -52,12 +53,12 @@ func queryBackend(host, command string) (string, error) {
 func Summary(server string) (SummaryTable, error) {
 	query, err := queryBackend(server, commandSummary)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "getting summary failed")
 	}
 
 	tbl, err := parseSummaryTable(query)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "parsing summary failed")
 	}
 
 	return tbl, nil
@@ -67,12 +68,12 @@ func Details(server, peer string) (*PeerDetails, error) {
 	cmd := fmt.Sprintf(commandDetails, peer)
 	query, err := queryBackend(server, cmd)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "getting details failed")
 	}
 
 	details, err := parsePeerDetails(query)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "parsing details failed")
 	}
 
 	return details, nil
@@ -88,12 +89,12 @@ func Route(server, address string, all bool) (*RouteDetails, error) {
 
 	query, err := queryBackend(server, cmd)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "getting route failed")
 	}
 
 	details := RouteDetails{
-		address: address,
-		details: query,
+		Address: address,
+		Details: query,
 	}
 
 	return &details, nil
