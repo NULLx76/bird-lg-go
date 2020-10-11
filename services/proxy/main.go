@@ -9,11 +9,6 @@ import (
 	"os"
 )
 
-// Check if a byte is a character or a number
-func isNumeric(b byte) bool {
-	return b >= byte('0') && b <= byte('9')
-}
-
 // Default handler, returns 500 Internal Server Error
 func invalidHandler(w http.ResponseWriter, _ *http.Request) {
 	http.Error(w, "Invalid Request", http.StatusInternalServerError)
