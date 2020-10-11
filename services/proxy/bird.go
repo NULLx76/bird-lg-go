@@ -15,6 +15,7 @@ func isNumeric(b byte) bool {
 	return b >= byte('0') && b <= byte('9')
 }
 
+// birdScanToEnd will scan the buffer to the end and write its content to w
 func birdScanToEnd(s *bufio.Scanner, w io.Writer) error {
 	if w == nil {
 		return errors.New("nil writer")
@@ -54,12 +55,13 @@ func birdScanToEnd(s *bufio.Scanner, w io.Writer) error {
 	return nil
 }
 
-// Write a command to a bird socket
+// birdWriteln writes a command to a bird socket
 func birdWriteln(bird io.Writer, s string) error {
 	_, err := bird.Write([]byte(s + "\n"))
 	return errors.Wrap(err, "sending message to bird failed")
 }
 
+// birdHandler http handler that interacts with the bird socket
 func birdHandler(socket string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query().Get("q")
@@ -69,27 +71,27 @@ func birdHandler(socket string) http.HandlerFunc {
 		}
 
 		// Connect to BIRDv4 socket
-		sock, err := net.Dial("unix", socket)
+		birdS, err := net.Dial("unix", socket)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		defer sock.Close()
+		defer birdS.Close()
 
 		// Set deadline t
-		if err = sock.SetDeadline(time.Now().Add(time.Second * 30)); err != nil {
+		if err = birdS.SetDeadline(time.Now().Add(time.Second * 30)); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// Create scanner for the socket
-		bird := bufio.NewScanner(sock)
+		bird := bufio.NewScanner(birdS)
 
 		// Advance beyond the welcome message
 		bird.Scan()
 
 		// Restrict access so no modifications can take place
-		err = birdWriteln(sock, "restrict")
+		err = birdWriteln(birdS, "restrict")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -99,13 +101,13 @@ func birdHandler(socket string) http.HandlerFunc {
 		bird.Scan()
 
 		// Send query to bird
-		err = birdWriteln(sock, query)
+		err = birdWriteln(birdS, query)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// writeback reply
+		// write reply to http socket
 		err = birdScanToEnd(bird, w)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

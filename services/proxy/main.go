@@ -20,7 +20,7 @@ type Config struct {
 }
 
 func main() {
-	var conf = Config{
+	conf := Config{
 		"/var/run/bird.ctl",
 		":8000",
 	}
