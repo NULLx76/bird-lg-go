@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"io"
 	"net"
 	"net/http"
@@ -11,66 +12,26 @@ import (
 // Read a line from bird socket, removing preceding status number, output it.
 // Returns if there are more lines.
 func birdReadln(bird *bufio.Reader, w io.Writer) bool {
-	// Read from socket byte by byte, until reaching newline character
-	//c := make([]byte, 1024)
-	//pos := 0
-	//for {
-	//	if pos >= 1024 {
-	//		break
-	//	}
-	//	_, err := bird.Read(c[pos : pos+1])
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//	if c[pos] == byte('\n') {
-	//		break
-	//	}
-	//	pos++
-	//}
-	//c = c[:pos+1]
-
-	c, err := bird.ReadString('\n')
+	c, err := bird.ReadBytes('\n')
 	if err != nil {
 		panic(err)
 	}
-	pos := len(c) - 1
 
-	// Remove preceding status number, different situations
-	if pos < 4 {
-		// Line is too short to have a status number
-		if w != nil {
-			pos = 0
-			for c[pos] == byte(' ') {
-				pos++
-			}
-			if _, err := w.Write(c[pos:]); err != nil {
-				panic(err)
-			}
+	if len(c) > 4 && isNumeric(c[0]) && isNumeric(c[1]) && isNumeric(c[2]) && isNumeric(c[3]) {
+		c = c[5:]
+
+		bytes.TrimSpace(c)
+		if _, err := w.Write(c); err != nil {
+			panic(err)
 		}
-		return true
-	} else if isNumeric(c[0]) && isNumeric(c[1]) && isNumeric(c[2]) && isNumeric(c[3]) {
-		// There is a status number at beginning, remove first 5 bytes
-		if w != nil && pos > 6 {
-			pos = 5
-			for c[pos] == byte(' ') {
-				pos++
-			}
-			if _, err := w.Write(c[pos:]); err != nil {
-				panic(err)
-			}
-		}
+
 		return c[0] != byte('0') && c[0] != byte('8') && c[0] != byte('9')
 	} else {
-		// There is no status number, only remove preceding spaces
-		if w != nil {
-			pos = 0
-			for c[pos] == byte(' ') {
-				pos++
-			}
-			if _, err := w.Write(c[pos:]); err != nil {
-				panic(err)
-			}
+		bytes.TrimSpace(c)
+		if _, err := w.Write(c); err != nil {
+			panic(err)
 		}
+
 		return true
 	}
 }
