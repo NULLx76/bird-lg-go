@@ -30,6 +30,7 @@ func main() {
 	r.Get("/", mainPageHandler)
 	r.Get("/{server}/details/{peer}", peerPageHandler)
 	r.Get("/{server}/route/{ip}", routePageHandler)
+	r.Post("/{server}/route", routeFormHandler)
 
 	// Static files
 	workDir, _ := os.Getwd()

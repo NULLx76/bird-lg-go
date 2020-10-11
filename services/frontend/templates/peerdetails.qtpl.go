@@ -119,13 +119,13 @@ func (p *PeerPage) StreamBody(qw422016 *qt422016.Writer) {
 	if strings.TrimSpace(p.Peer.Details) != "" {
 //line templates/peerdetails.qtpl:38
 		qw422016.N().S(`
-	<pre>
+        <pre>
 `)
 //line templates/peerdetails.qtpl:40
 		qw422016.E().S(p.Peer.Details)
 //line templates/peerdetails.qtpl:40
 		qw422016.N().S(`
-	</pre>
+        </pre>
 	`)
 //line templates/peerdetails.qtpl:42
 	}

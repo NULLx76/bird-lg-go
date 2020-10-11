@@ -84,33 +84,32 @@ func (p *RoutePage) StreamBody(qw422016 *qt422016.Writer) {
 //line templates/route.qtpl:26
 	qw422016.N().S(`
 	</pre>
-
 `)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 }
 
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 func (p *RoutePage) WriteBody(qq422016 qtio422016.Writer) {
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	p.StreamBody(qw422016)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	qt422016.ReleaseWriter(qw422016)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 }
 
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 func (p *RoutePage) Body() string {
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	p.WriteBody(qb422016)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	qs422016 := string(qb422016.B)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 	return qs422016
-//line templates/route.qtpl:29
+//line templates/route.qtpl:28
 }

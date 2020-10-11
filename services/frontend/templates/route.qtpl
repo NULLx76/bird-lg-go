@@ -25,5 +25,4 @@ type RoutePage struct {
 	<pre>
 {%s p.Route.Details %}
 	</pre>
-
 {% endfunc %}

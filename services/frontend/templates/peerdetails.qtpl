@@ -36,8 +36,8 @@ type PeerPage struct {
         </tr>
 	</table>
 	{% if strings.TrimSpace(p.Peer.Details) != "" %}
-	<pre>
+        <pre>
 {%s p.Peer.Details %}
-	</pre>
+        </pre>
 	{% endif %}
 {% endfunc %}

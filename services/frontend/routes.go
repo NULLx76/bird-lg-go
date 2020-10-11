@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/NULLx76/bird-lg-go/pkg/proxy"
 	"github.com/NULLx76/bird-lg-go/services/frontend/templates"
 	"github.com/go-chi/chi"
@@ -47,13 +48,27 @@ func peerPageHandler(w http.ResponseWriter, r *http.Request) {
 	templates.WritePageTemplate(w, p)
 }
 
+func routeFormHandler(w http.ResponseWriter, r *http.Request) {
+	server := chi.URLParam(r, "server")
+	ip := r.FormValue("ip")
+	allF := r.FormValue("all")
+	all := "false"
+	if allF == "on" {
+		all = "true"
+	}
+
+	url := fmt.Sprintf("/%s/route/%s?all=%s", server, ip, all)
+
+	http.Redirect(w, r, url, http.StatusSeeOther)
+}
+
 func routePageHandler(w http.ResponseWriter, r *http.Request) {
 	server := chi.URLParam(r, "server")
 	ip := chi.URLParam(r, "ip")
 
 	allQ := r.URL.Query().Get("all")
 	all := false
-	if allQ == "1" || allQ == "true" {
+	if allQ == "1" || allQ == "on" || allQ == "true" {
 		all = true
 	}
 

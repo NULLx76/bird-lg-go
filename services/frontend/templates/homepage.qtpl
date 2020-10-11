@@ -17,28 +17,36 @@ type MainPage struct {
 {% func (p *MainPage) Body() %}
 	<h1>dn42 Looking Glass</h1>
     {% for name, server := range p.Summaries %}
-    <div class="text-center">
-        <h2 class="p-3">Server: {%s name %}</h2>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Proto</th>
-                <th>Table</th>
-                <th>State</th>
-                <th>Since</th>
-                <th>Info</th>
-            </tr>
-            {% for row := range server %}
-            <tr>
-                <td><a href="/{%s name %}/details/{%s server[row].Name %}"> {%s server[row].Name %} </a></td>
-                <td>{%s server[row].Proto %}</td>
-                <td>{%s server[row].Table %}</td>
-                <td>{%s server[row].State %}</td>
-                <td>{%s server[row].Since %}</td>
-                <td>{%s server[row].Info %}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
+        <div class="text-center">
+            <h2 class="p-3">Server: {%s name %}</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Proto</th>
+                    <th>Table</th>
+                    <th>State</th>
+                    <th>Since</th>
+                    <th>Info</th>
+                </tr>
+                {% for row := range server %}
+                    <tr>
+                        <td><a href="/{%s name %}/details/{%s server[row].Name %}"> {%s server[row].Name %} </a></td>
+                        <td>{%s server[row].Proto %}</td>
+                        <td>{%s server[row].Table %}</td>
+                        <td>{%s server[row].State %}</td>
+                        <td>{%s server[row].Since %}</td>
+                        <td>{%s server[row].Info %}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <form action="/{%s name %}/route" method="post" class="text-center w-full">
+                <h2>Route Lookup</h2>
+                <div>
+                    <label>IP Address: <input name="ip" placeholder="172.20.0.53" class="input-box" type="text"></label>
+                    <input class="button" type="submit" value="Lookup">
+                </div>
+                <label class="box p-2">More info <input name="all" type="checkbox"></label>
+            </form>
+        </div>
     {% endfor %}
 {% endfunc %}

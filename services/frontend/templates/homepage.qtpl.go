@@ -72,28 +72,28 @@ func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
 	for name, server := range p.Summaries {
 //line templates/homepage.qtpl:19
 		qw422016.N().S(`
-    <div class="text-center">
-        <h2 class="p-3">Server: `)
+        <div class="text-center">
+            <h2 class="p-3">Server: `)
 //line templates/homepage.qtpl:21
 		qw422016.E().S(name)
 //line templates/homepage.qtpl:21
 		qw422016.N().S(`</h2>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Proto</th>
-                <th>Table</th>
-                <th>State</th>
-                <th>Since</th>
-                <th>Info</th>
-            </tr>
-            `)
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Proto</th>
+                    <th>Table</th>
+                    <th>State</th>
+                    <th>Since</th>
+                    <th>Info</th>
+                </tr>
+                `)
 //line templates/homepage.qtpl:31
 		for row := range server {
 //line templates/homepage.qtpl:31
 			qw422016.N().S(`
-            <tr>
-                <td><a href="/`)
+                    <tr>
+                        <td><a href="/`)
 //line templates/homepage.qtpl:33
 			qw422016.E().S(name)
 //line templates/homepage.qtpl:33
@@ -106,70 +106,82 @@ func (p *MainPage) StreamBody(qw422016 *qt422016.Writer) {
 			qw422016.E().S(server[row].Name)
 //line templates/homepage.qtpl:33
 			qw422016.N().S(` </a></td>
-                <td>`)
+                        <td>`)
 //line templates/homepage.qtpl:34
 			qw422016.E().S(server[row].Proto)
 //line templates/homepage.qtpl:34
 			qw422016.N().S(`</td>
-                <td>`)
+                        <td>`)
 //line templates/homepage.qtpl:35
 			qw422016.E().S(server[row].Table)
 //line templates/homepage.qtpl:35
 			qw422016.N().S(`</td>
-                <td>`)
+                        <td>`)
 //line templates/homepage.qtpl:36
 			qw422016.E().S(server[row].State)
 //line templates/homepage.qtpl:36
 			qw422016.N().S(`</td>
-                <td>`)
+                        <td>`)
 //line templates/homepage.qtpl:37
 			qw422016.E().S(server[row].Since)
 //line templates/homepage.qtpl:37
 			qw422016.N().S(`</td>
-                <td>`)
+                        <td>`)
 //line templates/homepage.qtpl:38
 			qw422016.E().S(server[row].Info)
 //line templates/homepage.qtpl:38
 			qw422016.N().S(`</td>
-            </tr>
-            `)
+                    </tr>
+                `)
 //line templates/homepage.qtpl:40
 		}
 //line templates/homepage.qtpl:40
 		qw422016.N().S(`
-        </table>
-    </div>
+            </table>
+            <form action="/`)
+//line templates/homepage.qtpl:42
+		qw422016.E().S(name)
+//line templates/homepage.qtpl:42
+		qw422016.N().S(`/route" method="post" class="text-center w-full">
+                <h2>Route Lookup</h2>
+                <div>
+                    <label>IP Address: <input name="ip" placeholder="172.20.0.53" class="input-box" type="text"></label>
+                    <input class="button" type="submit" value="Lookup">
+                </div>
+                <label class="box p-2">More info <input name="all" type="checkbox"></label>
+            </form>
+        </div>
     `)
-//line templates/homepage.qtpl:43
+//line templates/homepage.qtpl:51
 	}
-//line templates/homepage.qtpl:43
+//line templates/homepage.qtpl:51
 	qw422016.N().S(`
 `)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 }
 
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 func (p *MainPage) WriteBody(qq422016 qtio422016.Writer) {
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	p.StreamBody(qw422016)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	qt422016.ReleaseWriter(qw422016)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 }
 
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 func (p *MainPage) Body() string {
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	p.WriteBody(qb422016)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	qs422016 := string(qb422016.B)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 	return qs422016
-//line templates/homepage.qtpl:44
+//line templates/homepage.qtpl:52
 }
