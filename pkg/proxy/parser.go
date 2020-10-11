@@ -41,19 +41,27 @@ func (RouteDetails) Render(http.ResponseWriter, *http.Request) error {
 }
 
 var headerRegex = regexp.MustCompile(`Name\s+Proto\s+Table\s+State\s+Since\s+Info`)
-var columnRegex = regexp.MustCompile(`(\w+)\s+(\w+)\s+([\w-]+)\s+(\w+)\s+([0-9\-.:]+)\s?(.*)`)
 
 func parsePeerRow(line string) PeerRow {
-	split := columnRegex.FindStringSubmatch(line)
+	split := strings.Split(line, " ")
 
-	// split[0] == whole string
+	i := 0
+	for index := range split {
+		if split[index] == "" {
+			continue
+		}
+
+		split[i] = split[index]
+		i++
+	}
+
 	return PeerRow{
-		Name:  strings.TrimSpace(split[1]),
-		Proto: strings.TrimSpace(split[2]),
-		Table: strings.TrimSpace(split[3]),
-		State: strings.TrimSpace(split[4]),
-		Since: strings.TrimSpace(split[5]),
-		Info:  strings.TrimSpace(split[6]),
+		Name:  split[0],
+		Proto: split[1],
+		Table: split[2],
+		State: split[3],
+		Since: split[4],
+		Info:  split[5],
 	}
 }
 

@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"io"
 	"net"
 	"net/http"
+	"time"
 )
 
 // Read a line from bird socket, removing preceding status number, output it.
@@ -25,7 +27,6 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 		}
 		pos++
 	}
-
 	c = c[:pos+1]
 
 	// Remove preceding status number, different situations
@@ -83,17 +84,24 @@ func birdHandler(socket string) http.HandlerFunc {
 			invalidHandler(w, r)
 		} else {
 			// Initialize BIRDv4 socket
-			bird, err := net.Dial("unix", socket)
+			sock, err := net.Dial("unix", socket)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			defer bird.Close()
+			defer sock.Close()
+			err = sock.SetDeadline(time.Now().Add(time.Second * 30))
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			bird := bufio.NewReader(sock)
 
 			birdReadln(bird, nil)
-			birdWriteln(bird, "restrict")
+			birdWriteln(sock, "restrict")
 			birdReadln(bird, nil)
-			birdWriteln(bird, query)
+			birdWriteln(sock, query)
 			for birdReadln(bird, w) {
 			}
 		}
