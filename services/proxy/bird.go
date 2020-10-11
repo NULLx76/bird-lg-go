@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"io"
 	"net"
 	"net/http"
@@ -10,23 +11,29 @@ import (
 // Returns if there are more lines.
 func birdReadln(bird io.Reader, w io.Writer) bool {
 	// Read from socket byte by byte, until reaching newline character
-	c := make([]byte, 1024)
-	pos := 0
-	for {
-		if pos >= 1024 {
-			break
-		}
-		_, err := bird.Read(c[pos : pos+1])
-		if err != nil {
-			panic(err)
-		}
-		if c[pos] == byte('\n') {
-			break
-		}
-		pos++
+	//c := make([]byte, 1024)
+	//pos := 0
+	//for {
+	//	if pos >= 1024 {
+	//		break
+	//	}
+	//	_, err := bird.Read(c[pos : pos+1])
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//	if c[pos] == byte('\n') {
+	//		break
+	//	}
+	//	pos++
+	//}
+
+	reader := bufio.NewReader(bird)
+	c, err := reader.ReadBytes('\n')
+	if err != nil {
+		panic(err)
 	}
 
-	c = c[:pos+1]
+	pos := len(c)
 
 	// Remove preceding status number, different situations
 	if pos < 4 {
@@ -36,7 +43,9 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 			for c[pos] == byte(' ') {
 				pos++
 			}
-			w.Write(c[pos:])
+			if _, err := w.Write(c[pos:]); err != nil {
+				panic(err)
+			}
 		}
 		return true
 	} else if isNumeric(c[0]) && isNumeric(c[1]) && isNumeric(c[2]) && isNumeric(c[3]) {
@@ -46,7 +55,9 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 			for c[pos] == byte(' ') {
 				pos++
 			}
-			w.Write(c[pos:])
+			if _, err := w.Write(c[pos:]); err != nil {
+				panic(err)
+			}
 		}
 		return c[0] != byte('0') && c[0] != byte('8') && c[0] != byte('9')
 	} else {
@@ -56,7 +67,9 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 			for c[pos] == byte(' ') {
 				pos++
 			}
-			w.Write(c[pos:])
+			if _, err := w.Write(c[pos:]); err != nil {
+				panic(err)
+			}
 		}
 		return true
 	}
@@ -64,10 +77,13 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 
 // Write a command to a bird socket
 func birdWriteln(bird io.Writer, s string) {
-	bird.Write([]byte(s + "\n"))
+	_, err := bird.Write([]byte(s + "\n"))
+	if err != nil {
+		panic(err)
+	}
 }
 
-func birdHandlerHandler(socket string) http.HandlerFunc {
+func birdHandler(socket string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		query := r.URL.Query().Get("q")
 		if query == "" {
@@ -76,7 +92,8 @@ func birdHandlerHandler(socket string) http.HandlerFunc {
 			// Initialize BIRDv4 socket
 			bird, err := net.Dial("unix", socket)
 			if err != nil {
-				panic(err)
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
 			}
 			defer bird.Close()
 

@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-// Check if a byte is character for number
+// Check if a byte is a character or a number
 func isNumeric(b byte) bool {
 	return b >= byte('0') && b <= byte('9')
 }
@@ -24,9 +24,7 @@ type Config struct {
 	listen     string
 }
 
-// Wrapper of tracer
 func main() {
-	// Prepare default socket paths, use environment variable if possible
 	var conf = Config{
 		"/var/run/bird.ctl",
 		":8000",
@@ -45,7 +43,7 @@ func main() {
 
 	// Start HTTP server
 	r.Get("/", invalidHandler)
-	r.Get("/bird", birdHandlerHandler(conf.birdSocket))
+	r.Get("/bird", birdHandler(conf.birdSocket))
 
 	r.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
 	r.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
