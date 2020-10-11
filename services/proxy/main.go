@@ -2,12 +2,12 @@ package main
 
 import (
 	"flag"
+	logger "github.com/chi-middleware/logrus-logger"
+	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
-
-	"github.com/go-chi/chi"
 )
 
 // Check if a byte is character for number
@@ -51,7 +51,7 @@ func main() {
 	setting.listen = *listenParam
 
 	r := chi.NewRouter()
-	r.Use(middleware.Logger)
+	r.Use(logger.Logger("router", log.StandardLogger()))
 	r.Use(middleware.Recoverer)
 
 	// Start HTTP server
@@ -60,6 +60,8 @@ func main() {
 
 	r.HandleFunc("/traceroute", tracerouteIPv4Wrapper)
 	r.HandleFunc("/traceroute6", tracerouteIPv6Wrapper)
+
+	log.Infof("Listening on %s", listenParam)
 
 	log.Fatal(http.ListenAndServe(*listenParam, r))
 }

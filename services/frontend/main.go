@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 )
+import "github.com/chi-middleware/logrus-logger"
 
 //go:generate qtc -dir=templates
 //go:generate yarn build
@@ -22,7 +23,8 @@ func main() {
 	log.Infof("starting the server at %s ...", addr)
 
 	r := chi.NewRouter()
-	r.Use(middleware.Logger)
+	r.Use(logger.Logger("router", log.StandardLogger()))
+	r.Use(middleware.GetHead)
 	r.Use(middleware.Recoverer)
 
 	r.Get("/", mainPageHandler)

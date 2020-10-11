@@ -11,8 +11,8 @@ import (
 func birdReadln(bird io.Reader, w io.Writer) bool {
 	// Read from socket byte by byte, until reaching newline character
 	c := make([]byte, 1024)
-	var pos int
-	for pos = 0; c[pos] != byte('\n'); pos++ {
+	pos := 0
+	for {
 		if pos >= 1024 {
 			break
 		}
@@ -20,6 +20,10 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 		if err != nil {
 			panic(err)
 		}
+		if c[pos] == byte('\n') {
+			break
+		}
+		pos++
 	}
 
 	c = c[:pos+1]

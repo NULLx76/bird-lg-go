@@ -1,6 +1,7 @@
 package main
 
 import (
+	logger "github.com/chi-middleware/logrus-logger"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
@@ -22,7 +23,7 @@ func main() {
 	s := NewRoutes(cfg)
 
 	r := chi.NewRouter()
-	r.Use(middleware.Logger)
+	r.Use(logger.Logger("router", log.StandardLogger()))
 	r.Use(middleware.Recoverer)
 	r.Use(render.SetContentType(render.ContentTypeJSON))
 
