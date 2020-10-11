@@ -22,6 +22,7 @@ func birdScanToEnd(s *bufio.Scanner, w io.Writer) {
 			if w != nil {
 				nc := c[5:]
 				nc = bytes.Trim(nc, " ")
+				nc = append(nc, '\n')
 
 				if _, err := w.Write(nc); err != nil {
 					panic(err)
@@ -37,6 +38,7 @@ func birdScanToEnd(s *bufio.Scanner, w io.Writer) {
 		} else {
 			if w != nil {
 				c = bytes.Trim(c, " ")
+				c = append(c, '\n')
 				if _, err := w.Write(c); err != nil {
 					panic(err)
 				}
