@@ -26,14 +26,13 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 	//	}
 	//	pos++
 	//}
+	//
+	rd := bufio.NewReader(bird)
+	c, _ := rd.ReadBytes('\n')
+	pos := len(c) - 1
 
-	reader := bufio.NewReader(bird)
-	c, err := reader.ReadBytes('\n')
-	if err != nil {
-		panic(err)
-	}
 
-	pos := len(c)
+	c = c[:pos+1]
 
 	// Remove preceding status number, different situations
 	if pos < 4 {
