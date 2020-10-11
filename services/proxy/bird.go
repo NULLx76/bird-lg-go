@@ -67,24 +67,25 @@ func birdWriteln(bird io.Writer, s string) {
 	bird.Write([]byte(s + "\n"))
 }
 
-// Handles BIRD queries
-func birdHandler(httpW http.ResponseWriter, httpR *http.Request) {
-	query := httpR.URL.Query().Get("q")
-	if query == "" {
-		invalidHandler(httpW, httpR)
-	} else {
-		// Initialize BIRDv4 socket
-		bird, err := net.Dial("unix", setting.birdSocket)
-		if err != nil {
-			panic(err)
-		}
-		defer bird.Close()
+func birdHandlerHandler(socket string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		query := r.URL.Query().Get("q")
+		if query == "" {
+			invalidHandler(w, r)
+		} else {
+			// Initialize BIRDv4 socket
+			bird, err := net.Dial("unix", socket)
+			if err != nil {
+				panic(err)
+			}
+			defer bird.Close()
 
-		birdReadln(bird, nil)
-		birdWriteln(bird, "restrict")
-		birdReadln(bird, nil)
-		birdWriteln(bird, query)
-		for birdReadln(bird, httpW) {
+			birdReadln(bird, nil)
+			birdWriteln(bird, "restrict")
+			birdReadln(bird, nil)
+			birdWriteln(bird, query)
+			for birdReadln(bird, w) {
+			}
 		}
 	}
 }
