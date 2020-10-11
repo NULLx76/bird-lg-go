@@ -46,12 +46,12 @@ func parsePeerRow(line string) PeerRow {
 	split := strings.Split(line, " ")
 
 	i := 0
-	for index := range split {
-		if split[index] == "" {
+	for si := range split {
+		if split[si] == "" {
 			continue
 		}
 
-		split[i] = split[index]
+		split[i] = split[si]
 		i++
 	}
 

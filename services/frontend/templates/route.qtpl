@@ -11,9 +11,10 @@ type RoutePage struct {
 %}
 
 {% func (p *RoutePage) Title() %}
-	Bird Looking Glass -
+	Bird Looking Glass - Route for {%s p.Route.Address %}
 {% endfunc %}
 
+RoutePage is the page which shows the route information for a given ip address
 {% func (p *RoutePage) Body() %}
 	<h2 class="p-3">Route Information</h2>
 	<table>

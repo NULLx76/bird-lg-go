@@ -15,6 +15,7 @@ type PeerPage struct {
 	Bird Looking Glass - {%s p.Peer.Info.Name %}
 {% endfunc %}
 
+PeerPage shows the details of one specific peer entry in the protocols table
 {% func (p *PeerPage) Body() %}
 	<h2 class="p-3">Peer Details</h2>
 	<table>
