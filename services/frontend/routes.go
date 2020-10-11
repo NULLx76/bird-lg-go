@@ -46,3 +46,26 @@ func peerPageHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	templates.WritePageTemplate(w, p)
 }
+
+func routePageHandler(w http.ResponseWriter, r *http.Request) {
+	server := chi.URLParam(r, "server")
+	ip := chi.URLParam(r, "ip")
+
+	allQ := r.URL.Query().Get("all")
+	all := false
+	if allQ == "1" || allQ == "true" {
+		all = true
+	}
+
+	route, err := GetRoute(server, ip, all)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	p := &templates.RoutePage{
+		Route: route,
+	}
+
+	templates.WritePageTemplate(w, p)
+}

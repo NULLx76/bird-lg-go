@@ -1,6 +1,7 @@
 {%
 import (
     "github.com/NULLx76/bird-lg-go/pkg/proxy"
+    "strings"
 )
 %}
 
@@ -34,7 +35,7 @@ type PeerPage struct {
             <td>{%s p.Peer.Info.Info %}</td>
         </tr>
 	</table>
-	{% if p.Peer.Details != "" %}
+	{% if strings.TrimSpace(p.Peer.Details) != "" %}
 	<pre>
 {%s p.Peer.Details %}
 	</pre>

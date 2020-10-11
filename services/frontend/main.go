@@ -29,6 +29,7 @@ func main() {
 
 	r.Get("/", mainPageHandler)
 	r.Get("/{server}/details/{peer}", peerPageHandler)
+	r.Get("/{server}/route/{ip}", routePageHandler)
 
 	// Static files
 	workDir, _ := os.Getwd()

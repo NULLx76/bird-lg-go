@@ -24,7 +24,7 @@ var (
 
 //line templates/route.qtpl:8
 type RoutePage struct {
-	Peer *proxy.RouteDetails
+	Route *proxy.RouteDetails
 }
 
 //line templates/route.qtpl:13
@@ -66,33 +66,51 @@ func (p *RoutePage) Title() string {
 func (p *RoutePage) StreamBody(qw422016 *qt422016.Writer) {
 //line templates/route.qtpl:17
 	qw422016.N().S(`
+	<h2 class="p-3">Route Information</h2>
+	<table>
+        <tr>
+            <th>Address</th>
+            <td>`)
+//line templates/route.qtpl:22
+	qw422016.E().S(p.Route.Address)
+//line templates/route.qtpl:22
+	qw422016.N().S(`</td>
+        </tr>
+	</table>
+	<pre>
+`)
+//line templates/route.qtpl:26
+	qw422016.E().S(p.Route.Details)
+//line templates/route.qtpl:26
+	qw422016.N().S(`
+	</pre>
 
 `)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 }
 
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 func (p *RoutePage) WriteBody(qq422016 qtio422016.Writer) {
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	qw422016 := qt422016.AcquireWriter(qq422016)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	p.StreamBody(qw422016)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	qt422016.ReleaseWriter(qw422016)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 }
 
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 func (p *RoutePage) Body() string {
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	qb422016 := qt422016.AcquireByteBuffer()
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	p.WriteBody(qb422016)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	qs422016 := string(qb422016.B)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	qt422016.ReleaseByteBuffer(qb422016)
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 	return qs422016
-//line templates/route.qtpl:19
+//line templates/route.qtpl:29
 }

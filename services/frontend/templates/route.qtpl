@@ -6,7 +6,7 @@ import (
 
 {% code
 type RoutePage struct {
-	Peer *proxy.RouteDetails
+	Route *proxy.RouteDetails
 }
 %}
 
@@ -15,5 +15,15 @@ type RoutePage struct {
 {% endfunc %}
 
 {% func (p *RoutePage) Body() %}
+	<h2 class="p-3">Route Information</h2>
+	<table>
+        <tr>
+            <th>Address</th>
+            <td>{%s p.Route.Address %}</td>
+        </tr>
+	</table>
+	<pre>
+{%s p.Route.Details %}
+	</pre>
 
 {% endfunc %}
