@@ -28,7 +28,10 @@ func birdReadln(bird io.Reader, w io.Writer) bool {
 	//}
 	//
 	rd := bufio.NewReader(bird)
-	c, _ := rd.ReadBytes('\n')
+	c, err := rd.ReadBytes('\n')
+	if err != nil {
+		panic(err)
+	}
 	pos := len(c) - 1
 
 
