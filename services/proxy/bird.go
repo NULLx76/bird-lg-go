@@ -17,10 +17,10 @@ func birdReadln(bird *bufio.Reader, w io.Writer) bool {
 		panic(err)
 	}
 
-	if len(c) > 4 && isNumeric(c[0]) && isNumeric(c[1]) && isNumeric(c[2]) && isNumeric(c[3]) {
+	if len(c) > 4 && isNumeric(c[3]) {
 		if w != nil {
 			nc := c[5:]
-			bytes.TrimSpace(nc)
+			nc = bytes.TrimSpace(nc)
 
 			if _, err := w.Write(nc); err != nil {
 				panic(err)
@@ -30,7 +30,7 @@ func birdReadln(bird *bufio.Reader, w io.Writer) bool {
 		return c[0] != byte('0') && c[0] != byte('8') && c[0] != byte('9')
 	} else {
 		if w != nil {
-			bytes.TrimSpace(c)
+			c = bytes.TrimSpace(c)
 			if _, err := w.Write(c); err != nil {
 				panic(err)
 			}
