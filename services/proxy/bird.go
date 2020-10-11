@@ -42,7 +42,10 @@ func birdScanToEnd(s *bufio.Scanner, w io.Writer) error {
 			}
 		} else {
 			c = bytes.Trim(c, " ")
-			c = append(c, '\n')
+
+			if _, err := w.Write(c); err != nil {
+				return errors.Wrap(err, "error writing to writer")
+			}
 			if _, err := w.Write([]byte{'\n'}); err != nil {
 				return errors.Wrap(err, "error writing to writer")
 			}
@@ -73,7 +76,7 @@ func birdHandler(socket string) http.HandlerFunc {
 		}
 		defer sock.Close()
 
-		// Set deadline to 30s
+		// Set deadline t
 		if err = sock.SetDeadline(time.Now().Add(time.Second * 30)); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
