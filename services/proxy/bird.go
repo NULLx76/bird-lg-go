@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"io"
 	"net"
 	"net/http"
@@ -11,29 +10,21 @@ import (
 // Returns if there are more lines.
 func birdReadln(bird io.Reader, w io.Writer) bool {
 	// Read from socket byte by byte, until reaching newline character
-	//c := make([]byte, 1024)
-	//pos := 0
-	//for {
-	//	if pos >= 1024 {
-	//		break
-	//	}
-	//	_, err := bird.Read(c[pos : pos+1])
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//	if c[pos] == byte('\n') {
-	//		break
-	//	}
-	//	pos++
-	//}
-	//
-	rd := bufio.NewReaderSize(bird, 1024)
-	c, _, err := rd.ReadLine()
-	if err != nil {
-		panic(err)
+	c := make([]byte, 1024)
+	pos := 0
+	for {
+		if pos >= 1024 {
+			break
+		}
+		_, err := bird.Read(c[pos : pos+1])
+		if err != nil {
+			panic(err)
+		}
+		if c[pos] == byte('\n') {
+			break
+		}
+		pos++
 	}
-	pos := len(c) - 1
-
 
 	c = c[:pos+1]
 
