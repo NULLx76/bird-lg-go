@@ -10,24 +10,30 @@ import (
 
 // Read a line from bird socket, removing preceding status number, output it.
 // Returns if there are more lines.
-func birdReadln(bird io.Reader, w io.Writer) bool {
+func birdReadln(bird *bufio.Reader, w io.Writer) bool {
 	// Read from socket byte by byte, until reaching newline character
-	c := make([]byte, 1024)
-	pos := 0
-	for {
-		if pos >= 1024 {
-			break
-		}
-		_, err := bird.Read(c[pos : pos+1])
-		if err != nil {
-			panic(err)
-		}
-		if c[pos] == byte('\n') {
-			break
-		}
-		pos++
+	//c := make([]byte, 1024)
+	//pos := 0
+	//for {
+	//	if pos >= 1024 {
+	//		break
+	//	}
+	//	_, err := bird.Read(c[pos : pos+1])
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//	if c[pos] == byte('\n') {
+	//		break
+	//	}
+	//	pos++
+	//}
+	//c = c[:pos+1]
+
+	c, err := bird.ReadString('\n')
+	if err != nil {
+		panic(err)
 	}
-	c = c[:pos+1]
+	pos := len(c) - 1
 
 	// Remove preceding status number, different situations
 	if pos < 4 {
