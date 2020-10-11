@@ -1,0 +1,42 @@
+{%
+import (
+    "github.com/NULLx76/bird-lg-go/pkg/proxy"
+)
+%}
+
+{% code
+type PeerPage struct {
+	Peer *proxy.PeerDetails
+}
+%}
+
+{% func (p *PeerPage) Title() %}
+	Bird Looking Glass - {%s p.Peer.Info.Name %}
+{% endfunc %}
+
+{% func (p *PeerPage) Body() %}
+	<h2 class="p-3">Peer Details</h2>
+	<table>
+        <tr>
+            <th>Name</th>
+            <th>Proto</th>
+            <th>Table</th>
+            <th>State</th>
+            <th>Since</th>
+            <th>Info</th>
+        </tr>
+        <tr>
+            <td>{%s p.Peer.Info.Name %}</td>
+            <td>{%s p.Peer.Info.Proto %}</td>
+            <td>{%s p.Peer.Info.Table %}</td>
+            <td>{%s p.Peer.Info.State %}</td>
+            <td>{%s p.Peer.Info.Since %}</td>
+            <td>{%s p.Peer.Info.Info %}</td>
+        </tr>
+	</table>
+	{% if p.Peer.Details != "" %}
+	<pre>
+{%s p.Peer.Details %}
+	</pre>
+	{% endif %}
+{% endfunc %}

@@ -1,0 +1,44 @@
+{%
+import (
+    "github.com/NULLx76/bird-lg-go/pkg/proxy"
+)
+%}
+
+{% code
+type MainPage struct {
+	Summaries map[string]proxy.SummaryTable
+}
+%}
+
+{% func (p *MainPage) Title() %}
+	Bird Looking Glass
+{% endfunc %}
+
+{% func (p *MainPage) Body() %}
+	<h1>dn42 Looking Glass</h1>
+    {% for name, server := range p.Summaries %}
+    <div class="text-center">
+        <h2 class="p-3">Server: {%s name %}</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Proto</th>
+                <th>Table</th>
+                <th>State</th>
+                <th>Since</th>
+                <th>Info</th>
+            </tr>
+            {% for row := range server %}
+            <tr>
+                <td><a href="/{%s name %}/details/{%s server[row].Name %}"> {%s server[row].Name %} </a></td>
+                <td>{%s server[row].Proto %}</td>
+                <td>{%s server[row].Table %}</td>
+                <td>{%s server[row].State %}</td>
+                <td>{%s server[row].Since %}</td>
+                <td>{%s server[row].Info %}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
+{% endfunc %}

@@ -1,0 +1,19 @@
+{%
+import (
+    "github.com/NULLx76/bird-lg-go/pkg/proxy"
+)
+%}
+
+{% code
+type RoutePage struct {
+	Peer *proxy.RouteDetails
+}
+%}
+
+{% func (p *RoutePage) Title() %}
+	Bird Looking Glass -
+{% endfunc %}
+
+{% func (p *RoutePage) Body() %}
+
+{% endfunc %}

@@ -9,13 +9,13 @@ import (
 )
 
 // Wrapper of traceroute, IPv4
-func tracerouteIPv4Wrapper(httpW http.ResponseWriter, httpR *http.Request) {
-	tracerouteRealHandler(false, httpW, httpR)
+func tracerouteIPv4Wrapper(w http.ResponseWriter, r *http.Request) {
+	tracerouteRealHandler(false, w, r)
 }
 
 // Wrapper of traceroute, IPv6
-func tracerouteIPv6Wrapper(httpW http.ResponseWriter, httpR *http.Request) {
-	tracerouteRealHandler(true, httpW, httpR)
+func tracerouteIPv6Wrapper(w http.ResponseWriter, r *http.Request) {
+	tracerouteRealHandler(true, w, r)
 }
 
 func tracerouteTryExecute(cmd []string, args [][]string) ([]byte, string) {
@@ -36,11 +36,11 @@ func tracerouteTryExecute(cmd []string, args [][]string) ([]byte, string) {
 }
 
 // Real handler of traceroute requests
-func tracerouteRealHandler(useIPv6 bool, httpW http.ResponseWriter, httpR *http.Request) {
-	query := httpR.URL.Query().Get("q")
+func tracerouteRealHandler(useIPv6 bool, w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
 	query = strings.TrimSpace(query)
 	if query == "" {
-		invalidHandler(httpW, httpR)
+		invalidHandler(w, r)
 	} else {
 		var result []byte
 		var errString string
@@ -127,16 +127,16 @@ func tracerouteRealHandler(useIPv6 bool, httpW http.ResponseWriter, httpR *http.
 				)
 			}
 		} else {
-			httpW.WriteHeader(http.StatusInternalServerError)
-			_, _ = httpW.Write([]byte("traceroute not supported on this node.\n"))
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte("traceroute not supported on this node.\n"))
 			return
 		}
 		if errString != "" {
-			httpW.WriteHeader(http.StatusInternalServerError)
-			_, _ = httpW.Write([]byte("traceroute returned error:\n\n" + errString))
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte("traceroute returned error:\n\n" + errString))
 		}
 		if result != nil {
-			_, _ = httpW.Write(result)
+			_, _ = w.Write(result)
 		}
 	}
 }
