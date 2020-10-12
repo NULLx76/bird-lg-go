@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/caarlos0/env/v6"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	log "github.com/sirupsen/logrus"
@@ -15,12 +16,18 @@ import "github.com/chi-middleware/logrus-logger"
 //go:generate yarn build
 //go:generate yarn minify
 
-var baseURL = "http://0.0.0.0:8000"
+type Config struct {
+	ApiUrl     string `env:"API_URL" envDefault:"http://0.0.0.0:8000"`
+	ListenAddr string `env:"ADDRESS" envDefault:":8080"`
+}
+
+var cfg Config
 
 func main() {
-	addr := ":8080"
-
-	log.Infof("starting the server at %s ...", addr)
+	cfg = Config{}
+	if err := env.Parse(&cfg); err != nil {
+		log.Fatalf("%+v\n", err)
+	}
 
 	r := chi.NewRouter()
 	r.Use(logger.Logger("router", log.StandardLogger()))
@@ -37,7 +44,9 @@ func main() {
 	filesDir := http.Dir(filepath.Join(workDir, "./build"))
 	FileServer(r, "/static", filesDir)
 
-	log.Fatal(http.ListenAndServe(addr, r))
+	log.Infof("starting the server at %s ...", cfg.ListenAddr)
+
+	log.Fatal(http.ListenAndServe(cfg.ListenAddr, r))
 }
 
 func FileServer(r chi.Router, path string, root http.FileSystem) {

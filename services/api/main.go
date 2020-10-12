@@ -10,12 +10,14 @@ import (
 )
 
 type Config struct {
-	birdServers map[string]string
+	ListenAddr  string
+	BirdServers map[string]string
 }
 
 func main() {
 	cfg := &Config{
-		birdServers: map[string]string{
+		ListenAddr: ":8000",
+		BirdServers: map[string]string{
 			"xirion": "http://dn42:8000",
 		},
 	}
@@ -32,5 +34,7 @@ func main() {
 	r.Get("/server/{server}/details/{peer}", s.GetDetails)
 	r.Get("/server/{server}/route/{route}", s.GetRoute)
 
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Infof("starting the server at %s ...", cfg.ListenAddr)
+
+	log.Fatal(http.ListenAndServe(cfg.ListenAddr, r))
 }

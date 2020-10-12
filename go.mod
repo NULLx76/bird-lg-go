@@ -3,6 +3,7 @@ module github.com/NULLx76/bird-lg-go
 go 1.15
 
 require (
+	github.com/caarlos0/env/v6 v6.3.0
 	github.com/chi-middleware/logrus-logger v0.1.0
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/render v1.0.1
