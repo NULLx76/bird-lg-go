@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="frontend" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="bird-lg-go" />
+    <working_directory value="$PROJECT_DIR$/services/frontend" />
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$/services/frontend/main.go" />
+    <package value="github.com/NULLx76/bird-lg-go/services/frontend" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>

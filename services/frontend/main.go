@@ -15,7 +15,7 @@ import "github.com/chi-middleware/logrus-logger"
 //go:generate yarn build
 //go:generate yarn minify
 
-var baseURL = "http://localhost:8000"
+var baseURL = "http://0.0.0.0:8000"
 
 func main() {
 	addr := ":8080"
@@ -34,7 +34,7 @@ func main() {
 
 	// Static files
 	workDir, _ := os.Getwd()
-	filesDir := http.Dir(filepath.Join(workDir, "services/frontend/build"))
+	filesDir := http.Dir(filepath.Join(workDir, "./build"))
 	FileServer(r, "/static", filesDir)
 
 	log.Fatal(http.ListenAndServe(addr, r))
