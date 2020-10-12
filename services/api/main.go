@@ -15,10 +15,11 @@ type Config struct {
 }
 
 func main() {
+	// TODO: Don't hardcode
 	cfg := &Config{
 		ListenAddr: ":8000",
 		BirdServers: map[string]string{
-			"xirion": "http://dn42:8000",
+			"xirion": "http://192.168.0.127:8000",
 		},
 	}
 
