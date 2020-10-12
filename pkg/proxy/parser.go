@@ -3,7 +3,6 @@ package proxy
 import (
 	"github.com/pkg/errors"
 	"net/http"
-	"regexp"
 	"strings"
 )
 
@@ -40,10 +39,8 @@ func (RouteDetails) Render(http.ResponseWriter, *http.Request) error {
 	return nil
 }
 
-var headerRegex = regexp.MustCompile(`Name\s+Proto\s+Table\s+State\s+Since\s+Info`)
-
-func parsePeerRow(line string) PeerRow {
-	split := strings.Split(line, " ")
+func splitStringCoalesceSpaces(str string) []string {
+	split := strings.Split(str, " ")
 
 	i := 0
 	for si := range split {
@@ -55,6 +52,12 @@ func parsePeerRow(line string) PeerRow {
 		i++
 	}
 
+	return split[:i+1]
+}
+
+func parsePeerRow(line string) PeerRow {
+	split := splitStringCoalesceSpaces(line)
+
 	return PeerRow{
 		Name:  split[0],
 		Proto: split[1],
@@ -65,9 +68,15 @@ func parsePeerRow(line string) PeerRow {
 	}
 }
 
+func validateSummaryHeader(str string) bool {
+	split := splitStringCoalesceSpaces(str)
+
+	return split[0] == "Name" && split[1] == "Proto" && split[2] == "Table" && split[3] == "State" && split[4] == "Since" && split[5] == "Info"
+}
+
 func parseSummaryTable(str string) (SummaryTable, error) {
 	rows := strings.Split(str, "\n")
-	if !headerRegex.MatchString(rows[0]) {
+	if !validateSummaryHeader(rows[0]) {
 		return nil, errors.New("invalid protocol table")
 	}
 
@@ -85,7 +94,7 @@ func parseSummaryTable(str string) (SummaryTable, error) {
 
 func parsePeerDetails(str string) (*PeerDetails, error) {
 	details := strings.SplitN(str, "\n", 3)
-	if len(details) != 3 || !headerRegex.MatchString(details[0]) {
+	if len(details) != 3 || !validateSummaryHeader(details[0]) {
 		return nil, errors.New("invalid protocol table")
 	}
 
