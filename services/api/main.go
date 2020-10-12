@@ -6,24 +6,43 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 type Config struct {
-	ListenAddr  string
-	BirdServers map[string]string
+	ListenAddr string            `yaml:"listen"`
+	Servers    map[string]string `yaml:"servers"`
+}
+
+func readConfigFromFile(filename string) (c Config, err error) {
+	file, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return Config{}, err
+	}
+
+	err = yaml.Unmarshal(file, &c)
+	if err != nil {
+		return Config{}, err
+	}
+
+	return c, nil
 }
 
 func main() {
-	// TODO: Don't hardcode
-	cfg := &Config{
-		ListenAddr: ":8000",
-		BirdServers: map[string]string{
-			"xirion": "http://192.168.0.127:8000",
-		},
+	file := "./config.yml"
+	if fileEnv := os.Getenv("CONFIG_FILE"); fileEnv != "" {
+		file = fileEnv
 	}
 
-	s := NewRoutes(cfg)
+	cfg, err := readConfigFromFile(file)
+	if err != nil {
+		log.Fatalf("Error encountered while reading config: %v", err)
+	}
+
+	s := NewRoutes(&cfg)
 
 	r := chi.NewRouter()
 	r.Use(logger.Logger("router", log.StandardLogger()))

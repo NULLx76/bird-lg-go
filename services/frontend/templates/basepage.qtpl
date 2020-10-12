@@ -9,7 +9,8 @@ Page {
 
 Page prints a page implementing Page interface.
 {% func PageTemplate(p Page) %}
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<title>{%= p.Title() %}</title>
 		<link href="/static/style.min.css" rel="stylesheet">

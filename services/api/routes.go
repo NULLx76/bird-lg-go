@@ -25,9 +25,9 @@ func (servers) Render(http.ResponseWriter, *http.Request) error {
 }
 
 func (s *Routes) GetServers(w http.ResponseWriter, r *http.Request) {
-	servers := make(servers, len(s.cfg.BirdServers))
+	servers := make(servers, len(s.cfg.Servers))
 	i := 0
-	for s := range s.cfg.BirdServers {
+	for s := range s.cfg.Servers {
 		servers[0] = s
 		i++
 	}
@@ -38,7 +38,7 @@ func (s *Routes) GetServers(w http.ResponseWriter, r *http.Request) {
 func (s *Routes) GetSummary(w http.ResponseWriter, r *http.Request) {
 	server := chi.URLParam(r, "server")
 
-	bird := s.cfg.BirdServers[server]
+	bird := s.cfg.Servers[server]
 	if bird == "" {
 		http.Error(w, "Invalid server", http.StatusBadRequest)
 		return
@@ -57,7 +57,7 @@ func (s *Routes) GetDetails(w http.ResponseWriter, r *http.Request) {
 	server := chi.URLParam(r, "server")
 	peer := chi.URLParam(r, "peer")
 
-	bird := s.cfg.BirdServers[server]
+	bird := s.cfg.Servers[server]
 	if bird == "" {
 		http.Error(w, "Invalid server", http.StatusBadRequest)
 		return
@@ -76,7 +76,7 @@ func (s *Routes) GetRoute(w http.ResponseWriter, r *http.Request) {
 	server := chi.URLParam(r, "server")
 	route := chi.URLParam(r, "route")
 
-	bird := s.cfg.BirdServers[server]
+	bird := s.cfg.Servers[server]
 	if bird == "" {
 		http.Error(w, "Invalid server", http.StatusBadRequest)
 		return

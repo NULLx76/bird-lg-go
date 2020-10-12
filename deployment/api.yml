@@ -1,3 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: bird-lg-api-configmap
+data:
+  config.yaml: |
+    listen: ":8000"
+    servers:
+      xirion: "http://192.168.0.127:8000"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,11 +27,22 @@ spec:
         app: bird-lg-api
         app.kubernetes.io/part-of: bird-lg
     spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            name: bird-lg-api-configmap
       containers:
-      - name: bird-lg-api
-        image: harbor.xirion.net/library/bird-lg/api
-        ports:
-        - containerPort: 8000
+        - name: bird-lg-api
+          image: harbor.xirion.net/library/bird-lg/api
+          env:
+            - name: CONFIG_FILE
+              value: "/app/config.yaml"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /app/config.yaml
+              subPath: config.yaml
+          ports:
+            - containerPort: 8000
 ---
 apiVersion: v1
 kind: Service

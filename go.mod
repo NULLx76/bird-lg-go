@@ -11,4 +11,5 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.5.1
 	github.com/valyala/quicktemplate v1.6.3
+	gopkg.in/yaml.v2 v2.2.2
 )

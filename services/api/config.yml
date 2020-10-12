@@ -1,0 +1,6 @@
+# Address for the server to listen on
+listen: ":8001"
+
+# Map of server names and the address where they can be reached
+servers:
+  xirion: "http://192.168.0.127:8000"
